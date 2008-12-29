@@ -1,0 +1,4 @@
+!         1 2 3 4 5 6 7 8 9 10 11 12 13
+pointer = 1 9 3 4 5 6 7 8 2 10 11 12 13
+remove lock = Caps_Lock
+add control = Caps_Lock
