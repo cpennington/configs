@@ -1,0 +1,28 @@
+rake <options> <target> ...;
+
+options = [-C | --classic-namespace |
+           -D | --describe [<PATTERN>] |
+           -n | --dry-run |
+           -e | --execute <CODE> |
+           -p | --execute-print <CODE> |
+           -E | --execute-continue <CODE> |
+           -I | --libdir <LIBDIR> |
+           -P | --prereqs |
+           -q | --quiet |
+           -f | --rakefile [<FILE>] |
+           -R | --rakelibdir <RAKELIBDIR> |
+           --rakelib |
+           -r | --require <MODULE> |
+           --rules |
+           -N | --no-search | --nosearch |
+           -s | --silent |
+           -g | --system |
+           -G | --no-system | --nosystem |
+           -T | --tasks [<PATTERN>] |
+           -t | --trace |
+           -v | --verbose |
+           -V | --version |
+           -h | -H | --help |
+           -f <rakefile> ];
+
+target = ! rake -T | grep "rake $COMP_CWORD.*#.*$" | cut -f2 -d' '
