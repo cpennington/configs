@@ -4,6 +4,7 @@ HOME = [
     '.vim/.',
     '.xmodmap',
     '.xmonad/.',
+    '.vimrc',
 ]
 
 ROOT = [
@@ -18,7 +19,7 @@ class String
     end
 end
 
-
+desc "Retrieve current config"
 task :scour do
     HOME.each do |file|
         outfile = '.' / file
