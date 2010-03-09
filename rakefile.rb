@@ -1,10 +1,21 @@
 HOME = [
-    '.compleat/.',
+    '.Xdefaults',
+    '.bashrc',
+    '.compleat',
+    '.config/autostart',
+    '.dmrc',
     '.emacs.d/init.el',
-    '.vim/.',
-    '.xmodmap',
-    '.xmonad/.',
+    '.gitconfig',
+    '.irssi',
+    '.offlineimap',
+    '.offlineimaprc',
+    '.profile',
+    '.sup/config.yaml',
+    '.sup/hooks',
+    '.vim',
     '.vimrc',
+    '.xmodmap',
+    '.xmonad',
 ]
 
 ROOT = [
@@ -22,14 +33,14 @@ end
 desc "Retrieve current config"
 task :scour do
     HOME.each do |file|
-        outfile = '.' / file
-        makedirs(File.dirname(outfile))
-        cp_r(ENV['HOME'] / file, outfile)
+        outfile = '.' / File.dirname(file)
+        makedirs(outfile)
+        cp_r(ENV['HOME'] / file, outfile, :remove_destination => true)
     end
     ROOT.each do |file|
-        outfile = '.' / file
-        makedirs(File.dirname(outfile))
-        cp_r(file, outfile)
+        outfile = '.' / File.dirname(file)
+        makedirs(outfile)
+        cp_r(file, outfile, :remove_destination => true)
     end
 end
 
