@@ -1,0 +1,20 @@
+--- 
+:ask_for_subject: true
+:confirm_no_attachments: true
+:thread_by_subject: false
+:confirm_top_posting: true
+:edit_signature: false
+:discard_snippets_from_encrypted_messages: false
+:editor: vim -c '+/^\s*\n'
+:ask_for_cc: true
+:accounts: 
+  :default: 
+    :email: cpennington@wgen.net
+    :alternates: []
+
+    :sendmail: ssmtp -t
+    :signature: /home/cpennington/.signature
+    :name: Calen Pennington
+:default_attachment_save_dir: ""
+:sent_source: maildir:/home/cpennington/mail/wgen.imap/Sent
+:ask_for_bcc: false

@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Encoding=UTF-8
+Name=Gnome Do
+Type=Application
+Exec=gnome-do
+Icon=system-run
+Comment=
+X-GNOME-Autostart-enabled=true
+Hidden=false

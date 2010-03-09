@@ -7,7 +7,6 @@ HOME = [
     '.emacs.d/init.el',
     '.gitconfig',
     '.irssi',
-    '.offlineimap',
     '.offlineimaprc',
     '.profile',
     '.sup/config.yaml',

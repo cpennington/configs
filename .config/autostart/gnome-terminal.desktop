@@ -1,0 +1,10 @@
+
+[Desktop Entry]
+Type=Application
+Exec=urxvt -title Irssi
+Hidden=false
+X-GNOME-Autostart-enabled=true
+Name[en_US]=Irssi Terminal
+Name=Irssi Terminal
+Comment[en_US]=
+Comment=

@@ -1,0 +1,25 @@
+# Sample minimal config file.  Copy this to ~/.offlineimaprc and edit to
+# suit to get started fast.
+[general]
+accounts = Test
+ui = TTY.TTYUI
+maxconnections = 2
+
+[Account Test]
+localrepository = Local
+remoterepository = Remote
+
+[Repository Local]
+type = Maildir
+localfolders = ~/mail/wgen.imap
+
+[Repository Remote]
+type = IMAP
+remotehost = exchange.wgen.net
+ssl = yes
+remoteport = 993
+remoteuser = cpennington
+remotepassfile = ~/.pwd
+folderfilter = lambda foldername: not foldername.startswith('Public Folders')
+nametrans = lambda foldername: foldername.replace(' ', '_')
+

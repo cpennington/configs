@@ -1,0 +1,11 @@
+
+[Desktop Entry]
+Type=Application
+Encoding=UTF-8
+Version=1.0
+Name=No Name
+Name[en_US]=Tomcat
+Exec=/work/utils/apache-tomcat-6.0.18/bin/startup.sh
+X-GNOME-Autostart-enabled=false
+Comment[en_US]=Start tomcat (currently hosts solr, xplanner)
+Comment=Start tomcat (currently hosts solr, xplanner)

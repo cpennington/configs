@@ -1,0 +1,10 @@
+
+[Desktop Entry]
+Type=Application
+Name=Pidgin
+Exec=pidgin
+Icon=system-run
+Comment=
+Name[en_US]=Pidgin
+Comment[en_US]=
+X-GNOME-Autostart-enabled=false

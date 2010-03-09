@@ -1,0 +1,7 @@
+
+[Desktop Entry]
+Type=Application
+Name=Davmail
+Exec=davmail
+Icon=system-run
+Comment=Local portal to exchange server
