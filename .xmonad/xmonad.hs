@@ -11,12 +11,15 @@ import XMonad.Util.EZConfig
 import XMonad.Actions.PhysicalScreens
 
 myManageHook = composeAll
-    [ resource =? "Do" --> doIgnore
-    , resource =? "gvim" --> doF (W.shift "dev")
-    , className =? "Shiretoko" --> doF (W.shift "web")
-    , className =? "Thunderbird" --> doF (W.shift "mail")
-    , className =? "Pidgin" --> doF (W.shift "im")
-    , className =? "Xmessage" --> doFloat
+    [ title =? "Do"                             --> doIgnore
+    , resource =? "gvim"                        --> doF (W.shift "dev")
+    , className =? "Shiretoko"                  --> doF (W.shift "web")
+    , className =? "Thunderbird"                --> doF (W.shift "mail")
+    , className =? "Pidgin"                     --> doF (W.shift "im")
+    , className =? "Xmessage"                   --> doFloat
+    , resource =? "urxvt" <&&> title =? "Irssi" --> doF (W.shift "im")
+    , resource =? "urxvt" <&&> title =? "Sup"   --> doF (W.shift "mail")
+    , resource =? "sunbird-bin"                 --> doF (W.shift "mail")
     ]
 
 myLayoutHook = desktopLayoutModifiers $ 
@@ -39,10 +42,11 @@ myNewKeys = [ ("M-" ++ m ++ [key], windows $ f w)
             ]
 
 myConfig = gnomeConfig
-    { manageHook = manageHook gnomeConfig <+> myManageHook
-    , layoutHook = myLayoutHook
+    { manageHook  = manageHook gnomeConfig <+> myManageHook
+    , layoutHook  = myLayoutHook
     , startupHook = return () >> checkKeymap myConfig myNewKeys
-    , workspaces = map fst myWorkspaceHotkeys
+    , workspaces  = map fst myWorkspaceHotkeys
+    , terminal    = "urxvt"
     }
     `additionalKeysP` myNewKeys
 
