@@ -9,5 +9,6 @@ set softtabstop=4
 filetype plugin indent on
 let g:pydiction_location='/home/cpennington/work/python/pydiction-1.2/complete-dict'
 set autochdir
+set mouse=a
 
 au BufRead *-sup.*-mode set ft=mail
