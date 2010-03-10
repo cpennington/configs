@@ -125,6 +125,6 @@ export PATH=/var/lib/gems/1.8/bin:$PATH
 export SUP_INDEX=xapian
 export _JAVA_AWT_WM_NONREPARENTING=1 
 
-source /home/cpennington/.cabal/share/compleat-1.0/compleat_setup
+source ~/.cabal/share/compleat-1.0/compleat_setup
 
 source /etc/profile
