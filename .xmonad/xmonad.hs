@@ -9,6 +9,12 @@ import XMonad.Layout.IM
 import Data.Ratio ((%))
 import XMonad.Util.EZConfig
 import XMonad.Actions.PhysicalScreens
+import XMonad.Layout.TwoPane
+import XMonad.Prompt
+import XMonad.Prompt.Ssh
+import XMonad.Prompt.Shell
+import XMonad.Prompt.XMonad
+import qualified Data.Map as M
 
 myManageHook = composeAll
     [ title =? "Do"                             --> doIgnore
@@ -25,7 +31,7 @@ myManageHook = composeAll
 myLayoutHook = desktopLayoutModifiers $ 
     onWorkspace "terms" (spiral (1) ||| Full) $
     onWorkspace "im" (withIM (1%6) (Title "Buddy List") Full) $
-    Full ||| (Tall 1 (3/100) (3/4)) ||| (spiral (3%4))
+    Full ||| (Tall 1 (3/100) (3/4)) ||| (spiral (3%4)) ||| (TwoPane (3/100) (1/2))
 
 myWorkspaceHotkeys = [ ("web", 'w')
                      , ("dev", 'd')
@@ -33,12 +39,21 @@ myWorkspaceHotkeys = [ ("web", 'w')
                      , ("mail", 'm')
                      , ("im", 's')]
 
+-- By default, Ctrl-C in a prompt hangs XMonad. This is bad,
+-- so we quit the prompt instead
+safePromptKeymap = M.fromList [((controlMask, xK_c), quit)] `M.union` promptKeymap defaultXPConfig
+safePromptConfig = defaultXPConfig { promptKeymap = safePromptKeymap}
+
 myNewKeys = [ ("M-" ++ m ++ [key], windows $ f w)
             | (f, m)   <- [(W.greedyView, ""), (W.shift, "S-")]
             , (w, key) <- myWorkspaceHotkeys
             ] ++
             [ ("M-" ++ [key], viewScreen sc)
             | (key, sc) <- zip ['1' .. '9'] [0..]
+            ] ++
+            [ ("M-g", sshPrompt safePromptConfig)
+            , ("M-c", xmonadPrompt safePromptConfig)
+            , ("M-r", shellPrompt safePromptConfig)
             ]
 
 myConfig = gnomeConfig

@@ -15,7 +15,7 @@ localfolders = ~/mail/wgen.imap
 
 [Repository Remote]
 type = IMAP
-remotehost = exchange.wgen.net
+remotehost = exchange.wgenhq.net
 ssl = yes
 remoteport = 993
 remoteuser = cpennington

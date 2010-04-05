@@ -117,14 +117,16 @@ alias rvim='gvim --remote'
 alias ack='ack-grep'
 alias dsup='dtach -A ~/.dtach/sup sup'
 alias dirssi='dtach -A ~/.dtach/irssi irssi'
+alias ssh='TERM=xterm ssh'
 
 export EDITOR='vim'
 export JAVA_HOME=/usr/lib/jvm/java-6-sun/
 
-export PATH=/var/lib/gems/1.8/bin:$PATH
+export PATH=/var/lib/gems/1.8/bin:~/.cabal/bin:$PATH
 export SUP_INDEX=xapian
 export _JAVA_AWT_WM_NONREPARENTING=1 
 
 source ~/.cabal/share/compleat-1.0/compleat_setup
+source ~/work/z/z.sh
 
 source /etc/profile
