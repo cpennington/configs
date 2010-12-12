@@ -1,0 +1,4 @@
+Setup.lhs configure | build | install ;
+cabal (-h | --help | -V | --vesion | --numeric-version) ;
+cabal (configure | install | list | update | upgrade | fetch | upload | check | sdist | report | build | copy | haddock | clean | hscolour | register | test | help) [<package>] ;
+package = ! bash_cache.sh 'cabal list' | grep " \* " | cut -c 4-

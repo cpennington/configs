@@ -1,0 +1,4 @@
+test foo:bar;
+test foo:baz;
+test bat@bar;
+test bat@baz;
