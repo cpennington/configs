@@ -1,0 +1,15 @@
+/*
+!.bashrc
+!.compleat
+!.dmrc
+!.gitconfig
+!.gitignore
+!.gitignore.global
+!.profile
+!.vimrc
+!.Xdefaults
+!.xmodmap
+
+!.xmonad
+.xmonad/*
+!.xmonad/xmonad.hs

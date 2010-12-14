@@ -15,12 +15,15 @@ import XMonad.Prompt.Ssh
 import XMonad.Prompt.Shell
 import XMonad.Prompt.XMonad
 import qualified Data.Map as M
-import XMonad.Hooks.UrgencyHook
+import XMonad.Layout.LayoutScreens
+import XMonad.Util.Run
+import XMonad.Hooks.SetWMName
 
 myManageHook = composeAll
     [ title =? "Do"                             --> doIgnore
     , resource =? "gvim"                        --> doF (W.shift "dev")
     , className =? "Shiretoko"                  --> doF (W.shift "web")
+    , className =? "Firefox"                    --> doF (W.shift "web")
     , className =? "Thunderbird"                --> doF (W.shift "mail")
     , className =? "Pidgin"                     --> doF (W.shift "im")
     , className =? "Xmessage"                   --> doFloat
@@ -38,18 +41,24 @@ myWorkspaceHotkeys = [ ("web", 'w')
                      , ("dev", 'd')
                      , ("term", 't')
                      , ("mail", 'm')
-                     , ("im", 's')]
+                     , ("im", 's')
+                     , ("vm", 'v')]
 
 -- By default, Ctrl-C in a prompt hangs XMonad. This is bad,
 -- so we quit the prompt instead
 safePromptKeymap = M.fromList [((controlMask, xK_c), quit)] `M.union` promptKeymap defaultXPConfig
 safePromptConfig = defaultXPConfig { promptKeymap = safePromptKeymap}
 
+goToScreen :: ScreenId -> X ()
+goToScreen id = do
+    ws <- screenWorkspace id
+    whenJust ws (windows . W.view)
+
 myNewKeys = [ ("M-" ++ m ++ [key], windows $ f w)
             | (f, m)   <- [(W.greedyView, ""), (W.shift, "S-")]
             , (w, key) <- myWorkspaceHotkeys
             ] ++
-            [ ("M-" ++ [key], viewScreen sc)
+            [ ("M-" ++ [key], goToScreen sc)
             | (key, sc) <- zip ['1' .. '9'] [0..]
             ] ++
             [ ("M-g", sshPrompt safePromptConfig)
@@ -60,11 +69,11 @@ myNewKeys = [ ("M-" ++ m ++ [key], windows $ f w)
 myConfig = gnomeConfig
     { manageHook  = manageHook gnomeConfig <+> myManageHook
     , layoutHook  = myLayoutHook
-    , startupHook = return () >> checkKeymap myConfig myNewKeys
+    , startupHook = startupHook gnomeConfig >> checkKeymap myConfig myNewKeys >> setWMName "LG3D"
     , workspaces  = map fst myWorkspaceHotkeys
     , terminal    = "urxvt"
     }
     `additionalKeysP` myNewKeys
 
-main = xmonad $ withUrgencyHook FocusHook $ myConfig
+main = xmonad myConfig
 
