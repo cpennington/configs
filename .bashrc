@@ -106,25 +106,6 @@ if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
     . /etc/bash_completion
 fi
 
-function assh {
-    hostname=$1
-    shift
-    
-    if [[ $hostname == aad[0-9]* ]]; then
-        /usr/bin/ssh `echo $hostname | sed 's/aad/arisappdev/' | sed 's/$/.aris.wgenhq.net/'` $@
-    elif [[ $hostname == add[0-9]* ]]; then
-        /usr/bin/ssh `echo $hostname | sed 's/add/arisdatadev/' | sed 's/$/.aris.wgenhq.net/'` $@
-    elif [[ $hostname == doe[0-9]* ]]; then
-        /usr/bin/ssh `echo $hostname | sed 's/doe/10.154.0./'` $@
-    elif [[ $hostname == doh[0-9]* ]]; then
-        /usr/bin/ssh `echo $hostname | sed 's/doh/10.101.1./'` $@
-    elif [[ $hostname == dot[0-9]* ]]; then
-        /usr/bin/ssh `echo $hostname | sed 's/dot/10.110.0./'` $@
-    else
-        /usr/bin/ssh $hostname $@
-    fi
-}
-
 export CVSROOT=:pserver:cpennington@repository.wgenhq.net:2401/home/cvs/repository 
 
 alias rvim='gvim --remote'
@@ -134,7 +115,7 @@ alias dirssi='dtach -A ~/.dtach/irssi irssi'
 alias ssh='TERM=xterm ssh'
 alias gsd='sudo ~/work/3p/get-shit-done/get-shit-done.py'
 
-go () { . ~/work/spt/virtual_envs/$1/bin/activate; }
+alias go='workon'
 
 export EDITOR='vim'
 export JAVA_HOME=/usr/lib/jvm/default-java
