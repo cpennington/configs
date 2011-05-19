@@ -131,6 +131,9 @@ alias rvim='gvim --remote'
 alias ack='ack-grep'
 alias dsup='dtach -A ~/.dtach/sup sup'
 alias dirssi='dtach -A ~/.dtach/irssi irssi'
+alias ssh='TERM=xterm ssh'
+
+go () { . ~/work/spt/virtual_envs/$1/bin/activate; }
 
 export EDITOR='vim'
 export JAVA_HOME=/usr/lib/jvm/default-java
