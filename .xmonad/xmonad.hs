@@ -1,23 +1,24 @@
-import XMonad
-import XMonad.Config.Gnome
-import XMonad.ManageHook
-import XMonad.Layout.Spiral
-import XMonad.Config.Desktop
-import qualified XMonad.StackSet as W
-import XMonad.Layout.PerWorkspace
-import XMonad.Layout.IM
 import Data.Ratio ((%))
-import XMonad.Util.EZConfig
+import XMonad
 import XMonad.Actions.PhysicalScreens
-import XMonad.Layout.TwoPane
-import XMonad.Prompt
-import XMonad.Prompt.Ssh
-import XMonad.Prompt.Shell
-import XMonad.Prompt.XMonad
-import qualified Data.Map as M
-import XMonad.Layout.LayoutScreens
-import XMonad.Util.Run
+import XMonad.Actions.SpawnOn
+import XMonad.Config.Desktop
+import XMonad.Config.Gnome
 import XMonad.Hooks.SetWMName
+import XMonad.Layout.IM
+import XMonad.Layout.LayoutScreens
+import XMonad.Layout.PerWorkspace
+import XMonad.Layout.Spiral
+import XMonad.Layout.TwoPane
+import XMonad.ManageHook
+import XMonad.Prompt
+import XMonad.Prompt.Shell
+import XMonad.Prompt.Ssh
+import XMonad.Prompt.XMonad
+import XMonad.Util.EZConfig
+import XMonad.Util.Run
+import qualified Data.Map as M
+import qualified XMonad.StackSet as W
 
 myManageHook = composeAll
     [ title =? "Do"                             --> doIgnore
@@ -44,6 +45,10 @@ myWorkspaceHotkeys = [ ("web", 'w')
                      , ("calendar", 'l')
                      , ("pandora", 'p')]
 
+makeLauncher yargs run exec close = concat ["exe=`yeganesh ", yargs, " -- -t` && ", run, " ", exec, "$exe", close]
+launcher     = makeLauncher "" "eval" "\"exec " "\""
+termLauncher = makeLauncher "-p withterm" "exec urxvt -e" "" ""
+
 -- By default, Ctrl-C in a prompt hangs XMonad. This is bad,
 -- so we quit the prompt instead
 safePromptKeymap = M.fromList [((controlMask, xK_c), quit)] `M.union` promptKeymap defaultXPConfig
@@ -54,26 +59,32 @@ goToScreen id = do
     ws <- screenWorkspace id
     whenJust ws (windows . W.view)
 
-myNewKeys = [ ("M-" ++ m ++ [key], windows $ f w)
-            | (f, m)   <- [(W.greedyView, ""), (W.shift, "S-")]
-            , (w, key) <- myWorkspaceHotkeys
-            ] ++
-            [ ("M-" ++ [key], goToScreen sc)
-            | (key, sc) <- zip ['1' .. '9'] [0..]
-            ] ++
-            [ ("M-g", sshPrompt safePromptConfig)
-            , ("M-c", xmonadPrompt safePromptConfig)
-            , ("M-r", shellPrompt safePromptConfig)
-            ]
+myNewKeys sp = [ ("M-" ++ m ++ [key], windows $ f w)
+               | (f, m)   <- [(W.greedyView, ""), (W.shift, "S-")]
+               , (w, key) <- myWorkspaceHotkeys
+               ] ++
+               [ ("M-" ++ [key], goToScreen sc)
+               | (key, sc) <- zip ['1' .. '9'] [0..]
+               ] ++
+               [ ("M-g", sshPrompt safePromptConfig)
+               , ("M-c", xmonadPrompt safePromptConfig)
+               , ("M-r", shellPrompt safePromptConfig)
+               , ("M-.", safeSpawn "xcalib" ["-invert", "-alter"])
+               , ("M-<Space>", spawnHere sp launcher)
+               , ("M-S-<Space>", spawnHere sp termLauncher)
+               , ("M-C-<Space>", sendMessage NextLayout)
+               ]
 
-myConfig = gnomeConfig
+myConfig sp = gnomeConfig
     { manageHook  = manageHook gnomeConfig <+> myManageHook
     , layoutHook  = myLayoutHook
-    , startupHook = startupHook gnomeConfig >> checkKeymap myConfig myNewKeys >> setWMName "LG3D"
+    , startupHook = startupHook gnomeConfig >> checkKeymap (myConfig sp) (myNewKeys sp) >> setWMName "LG3D"
     , workspaces  = map fst myWorkspaceHotkeys
     , terminal    = "urxvt"
     }
-    `additionalKeysP` myNewKeys
+    `additionalKeysP` (myNewKeys sp)
 
-main = xmonad myConfig
+main = do
+    sp <- mkSpawner
+    xmonad $ myConfig sp
 
