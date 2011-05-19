@@ -145,6 +145,7 @@ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib/xulrunner-`xulrunner-1.9.2 --gr
 
 source ~/.cabal/share/compleat-1.0/compleat_setup
 source ~/work/z/z.sh
+source /usr/local/bin/virtualenvwrapper.sh
 
 [[ $- == *i* ]]   &&   . ~/work/3p/git-prompt/git-prompt.sh
 
