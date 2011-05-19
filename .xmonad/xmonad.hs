@@ -33,8 +33,6 @@ myManageHook = composeAll
     ]
 
 myLayoutHook = desktopLayoutModifiers $ 
-    onWorkspace "terms" (spiral (1) ||| Full) $
-    onWorkspace "im" (withIM (1%6) (Title "Buddy List") Full) $
     Full ||| (Tall 1 (3/100) (3/4)) ||| (spiral (3%4)) ||| (TwoPane (3/100) (1/2))
 
 myWorkspaceHotkeys = [ ("web", 'w')
@@ -42,7 +40,9 @@ myWorkspaceHotkeys = [ ("web", 'w')
                      , ("term", 't')
                      , ("mail", 'm')
                      , ("im", 's')
-                     , ("vm", 'v')]
+                     , ("vm", 'v')
+                     , ("calendar", 'l')
+                     , ("pandora", 'p')]
 
 -- By default, Ctrl-C in a prompt hangs XMonad. This is bad,
 -- so we quit the prompt instead
