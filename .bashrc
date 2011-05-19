@@ -132,6 +132,7 @@ alias ack='ack-grep'
 alias dsup='dtach -A ~/.dtach/sup sup'
 alias dirssi='dtach -A ~/.dtach/irssi irssi'
 alias ssh='TERM=xterm ssh'
+alias gsd='sudo ~/work/3p/get-shit-done/get-shit-done.py'
 
 go () { . ~/work/spt/virtual_envs/$1/bin/activate; }
 
