@@ -45,7 +45,7 @@ myWorkspaceHotkeys = [ ("web", 'w')
                      , ("calendar", 'l')
                      , ("pandora", 'p')]
 
-makeLauncher yargs run exec close = concat ["exe=`yeganesh ", yargs, " -- -t` && ", run, " ", exec, "$exe", close]
+makeLauncher yargs run exec close = concat ["exe=`yeganesh ", yargs, "` && ", run, " ", exec, "$exe", close]
 launcher     = makeLauncher "" "eval" "\"exec " "\""
 termLauncher = makeLauncher "-p withterm" "exec urxvt -e" "" ""
 
