@@ -42,8 +42,8 @@ xscreensaver.dateFormat:    %I:%M%P %a %b %d, %Y
 !
 URxvt*background: #2B2B2B
 URxvt*foreground: #DEDEDE
-URxvt*font: xft:Inconsolata:pixelsize=12
-URxvt*boldFont: xft:Inconsolata:bold:pixelsize=12
+URxvt*font: xft:Inconsolata:pixelsize=14
+URxvt*boldFont: xft:Inconsolata:bold:pixelsize=14
 URxvt*saveLines: 12000
 URxvt*scrollBar: false
 URxvt*scrollstyle: rxvt
