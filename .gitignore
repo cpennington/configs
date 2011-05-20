@@ -5,6 +5,7 @@
 !.gitconfig
 !.gitignore
 !.gitignore.global
+!.git-prompt.conf
 !.profile
 !.vimrc
 !.Xdefaults
