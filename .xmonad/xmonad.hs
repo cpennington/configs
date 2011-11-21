@@ -3,7 +3,7 @@ import XMonad
 import XMonad.Actions.PhysicalScreens
 import XMonad.Actions.SpawnOn
 import XMonad.Config.Desktop
-import XMonad.Config.Gnome
+import XMonad.Config.Xfce
 import XMonad.Hooks.SetWMName
 import XMonad.Layout.IM
 import XMonad.Layout.LayoutScreens
@@ -59,32 +59,30 @@ goToScreen id = do
     ws <- screenWorkspace id
     whenJust ws (windows . W.view)
 
-myNewKeys sp = [ ("M-" ++ m ++ [key], windows $ f w)
-               | (f, m)   <- [(W.greedyView, ""), (W.shift, "S-")]
-               , (w, key) <- myWorkspaceHotkeys
-               ] ++
-               [ ("M-" ++ [key], goToScreen sc)
-               | (key, sc) <- zip ['1' .. '9'] [0..]
-               ] ++
-               [ ("M-g", sshPrompt safePromptConfig)
-               , ("M-c", xmonadPrompt safePromptConfig)
-               , ("M-r", shellPrompt safePromptConfig)
-               , ("M-.", safeSpawn "xcalib" ["-invert", "-alter"])
-               , ("M-<Space>", spawnHere sp launcher)
-               , ("M-S-<Space>", spawnHere sp termLauncher)
-               , ("M-C-<Space>", sendMessage NextLayout)
-               ]
+myNewKeys = [ ("M-" ++ m ++ [key], windows $ f w)
+             | (f, m)   <- [(W.greedyView, ""), (W.shift, "S-")]
+             , (w, key) <- myWorkspaceHotkeys
+             ] ++
+             [ ("M-" ++ [key], goToScreen sc)
+             | (key, sc) <- zip ['1' .. '9'] [0..]
+             ] ++
+             [ ("M-g", sshPrompt safePromptConfig)
+             , ("M-c", xmonadPrompt safePromptConfig)
+             , ("M-r", shellPrompt safePromptConfig)
+             , ("M-.", safeSpawn "xcalib" ["-invert", "-alter"])
+             , ("M-<Space>", spawnHere launcher)
+             , ("M-S-<Space>", spawnHere termLauncher)
+             , ("M-C-<Space>", sendMessage NextLayout)
+             ]
 
-myConfig sp = gnomeConfig
-    { manageHook  = manageHook gnomeConfig <+> myManageHook
+myConfig = xfceConfig
+    { manageHook  = manageSpawn <+> myManageHook <+> manageHook xfceConfig
     , layoutHook  = myLayoutHook
-    , startupHook = startupHook gnomeConfig >> checkKeymap (myConfig sp) (myNewKeys sp) >> setWMName "LG3D"
+    , startupHook = startupHook xfceConfig >> checkKeymap myConfig myNewKeys >> setWMName "LG3D"
     , workspaces  = map fst myWorkspaceHotkeys
     , terminal    = "urxvt"
     }
-    `additionalKeysP` (myNewKeys sp)
+    `additionalKeysP` myNewKeys
 
-main = do
-    sp <- mkSpawner
-    xmonad $ myConfig sp
+main = xmonad myConfig
 
