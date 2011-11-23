@@ -36,6 +36,10 @@ xscreensaver.passwd.thermometer.background:  #202020
 xscreensaver.passwd.thermometer.width:       8
 !datestamp format--see the strftime(3) manual page for details
 xscreensaver.dateFormat:    %I:%M%P %a %b %d, %Y
+!-------------------------------------------------------------------------------
+!
+!	U R X V T - Settings
+!
 URxvt*background: #2B2B2B
 URxvt*foreground: #DEDEDE
 URxvt*font: xft:Inconsolata:pixelsize=12
