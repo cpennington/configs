@@ -1,3 +1,7 @@
 
 [Desktop]
 Session=xubuntu
+Language=en_US.utf8
+Layout=us	dvorak
+Langlist=en_US:en
+LCMess=en_US.UTF-8

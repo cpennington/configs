@@ -2,6 +2,8 @@
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
 
+source /etc/profile
+
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
 
@@ -102,6 +104,9 @@ if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
     . /etc/bash_completion
 fi
 
+if [ -f "/home/cpennington/stderred/lib/stderred.so" ]; then
+    export LD_PRELOAD="/home/cpennington/stderred/lib/stderred.so"
+fi
 alias go='workon'
 
 PATH=~/bin:~/.cabal/bin:$PATH
