@@ -65,28 +65,12 @@ xterm*|rxvt*)
     ;;
 esac
 
-# Add control groups for cup usage to keep desktop snappy
-if [ "$PS1" ] ; then  
-   mkdir -m 0700 /dev/cgroup/cpu/user/$$ > /dev/null 2>&1
-   echo $$ > /dev/cgroup/cpu/user/$$/tasks
-   echo "1" > /dev/cgroup/cpu/user/$$/notify_on_release
-fi
-
-# Alias definitions.
-# You may want to put all your additions into a separate file like
-# ~/.bash_aliases, instead of adding them here directly.
-# See /usr/share/doc/bash-doc/examples in the bash-doc package.
-
-if [ -f ~/.bash_aliases ]; then
-    . ~/.bash_aliases
-fi
-
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
     test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
     alias ls='ls --color=auto'
-    #alias dir='ls --color=auto --format=vertical'
-    #alias vdir='ls --color=auto --format=long'
+    #alias dir='dir --color=auto'
+    #alias vdir='vdir --color=auto'
 
     alias grep='grep --color=auto'
     alias fgrep='fgrep --color=auto'
@@ -98,7 +82,19 @@ alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
 
-export PATH=~/bin:$PATH
+# Add an "alert" alias for long running commands.  Use like so:
+#   sleep 10; alert
+alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+
+# Alias definitions.
+# You may want to put all your additions into a separate file like
+# ~/.bash_aliases, instead of adding them here directly.
+# See /usr/share/doc/bash-doc/examples in the bash-doc package.
+
+if [ -f ~/.bash_aliases ]; then
+    . ~/.bash_aliases
+fi
+
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
 # sources /etc/bash.bashrc).
@@ -106,29 +102,10 @@ if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
     . /etc/bash_completion
 fi
 
-export CVSROOT=:pserver:cpennington@repository.wgenhq.net:2401/home/cvs/repository 
-
-alias rvim='gvim --remote'
-alias ack='ack-grep'
-alias dsup='dtach -A ~/.dtach/sup sup'
-alias dirssi='dtach -A ~/.dtach/irssi irssi'
-alias ssh='TERM=xterm ssh'
-alias gsd='sudo ~/work/3p/get-shit-done/get-shit-done.py'
-
 alias go='workon'
 
-export EDITOR='vim'
-export JAVA_HOME=/usr/lib/jvm/default-java
-
-export PATH=/var/lib/gems/1.8/bin:~/.cabal/bin:$PATH
-export SUP_INDEX=xapian
-export _JAVA_AWT_WM_NONREPARENTING=1 
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib/xulrunner-`xulrunner-1.9.2 --gre-version`
+PATH=~/bin:~/.cabal/bin:$PATH
 
 source ~/.cabal/share/compleat-1.0/compleat_setup
-source ~/work/z/z.sh
-source /usr/local/bin/virtualenvwrapper.sh
 
-[[ $- == *i* ]]   &&   . ~/work/3p/git-prompt/git-prompt.sh
-
-source /etc/profile
+[[ $- == *i* ]]   &&   . ~/utils/git-prompt/git-prompt.sh
