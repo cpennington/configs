@@ -20,6 +20,7 @@ import XMonad.Util.Run
 import qualified Data.Map as M
 import qualified XMonad.StackSet as W
 
+
 myManageHook = composeAll
     [ title =? "Do"                             --> doIgnore
     , resource =? "gvim"                        --> doF (W.shift "dev")
@@ -78,7 +79,7 @@ myNewKeys = [ ("M-" ++ m ++ [key], windows $ f w)
 myConfig = xfceConfig
     { manageHook  = manageSpawn <+> myManageHook <+> manageHook xfceConfig
     , layoutHook  = myLayoutHook
-    , startupHook = startupHook xfceConfig >> checkKeymap myConfig myNewKeys >> setWMName "LG3D"
+    , startupHook = startupHook xfceConfig >> checkKeymap myConfig myNewKeys >> setWMName "LG3D" >> layoutSplitScreen 3 (Tall 1 (3/100) (1/2))
     , workspaces  = map fst myWorkspaceHotkeys
     , terminal    = "urxvt"
     }
