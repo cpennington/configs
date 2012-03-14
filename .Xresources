@@ -1,0 +1,56 @@
+! Xft settings ---------------------------------------------------------------
+
+Xft.dpi:        96
+Xft.antialias:  true
+Xft.rgba:       rgb
+Xft.hinting:    true
+Xft.hintstyle:  hintslight
+
+!-------------------------------------------------------------------------------
+!
+!	U R X V T - Settings
+!
+
+
+URxvt*background: #2B2B2B
+URxvt*foreground: #DEDEDE
+URxvt*font: xft:Inconsolata:pixelsize=16,\
+            xft:FreeMono:pixelsize=16
+URxvt*boldFont: xft:Inconsolata:bold:pixelsize=16,\
+                xft:FreeMono:bold:pixelsize=16
+URxvt*saveLines: 12000
+URxvt*scrollBar: false
+URxvt*scrollstyle: rxvt
+URxvt*perl-ext-common: default,matcher
+URxvt*urlLauncher: google-chrome
+URxvt*matcher.button: 1
+URxvt*colorUL: #86a2b0
+! black
+URxvt*color0  : #2E3436
+URxvt*color8  : #555753
+! red
+URxvt*color1  : #CC0000
+URxvt*color9  : #EF2929
+! green
+URxvt*color2  : #4E9A06
+URxvt*color10 : #8AE234
+! yellow
+URxvt*color3  : #C4A000
+URxvt*color11 : #FCE94F
+! blue
+URxvt*color4  : #3465A4
+URxvt*color12 : #729FCF
+! magenta
+URxvt*color5  : #75507B
+URxvt*color13 : #AD7FA8
+! cyan
+URxvt*color6  : #06989A
+URxvt*color14 : #34E2E2
+! white
+URxvt*color7  : #D3D7CF
+URxvt*color15 : #EEEEEC
+URxvt*urgentOnBell: true
+URxvt.keysym.Control-Up:   \033[1;5A
+URxvt.keysym.Control-Down:    \033[1;5B
+URxvt.keysym.Control-Left:    \033[1;5D
+URxvt.keysym.Control-Right:    \033[1;5C
