@@ -36,7 +36,7 @@
     autosetuprebase = always
 
 [push]
-	default = tracking
+	default = current
 
 [log]
 	follow = true
