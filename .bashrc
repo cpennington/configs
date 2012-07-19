@@ -104,8 +104,14 @@ fi
 
 alias go='workon'
 
-PATH=~/bin:~/.cabal/bin:$PATH
+export PATH=~/bin:~/.cabal/bin:$PATH
+export EDITOR=vim
+export LD_PRELOAD="/home/cpennington/utils/stderred/lib64/stderred.so"
 
 source ~/.cabal/share/compleat-1.0/compleat_setup
 
 [[ $- == *i* ]]   &&   . ~/utils/git-prompt/git-prompt.sh
+
+PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
+
+[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*

@@ -23,15 +23,7 @@ import qualified XMonad.StackSet as W
 
 myManageHook = composeAll
     [ title =? "Do"                             --> doIgnore
-    , resource =? "gvim"                        --> doF (W.shift "dev")
-    , className =? "Shiretoko"                  --> doF (W.shift "web")
-    , className =? "Firefox"                    --> doF (W.shift "web")
-    , className =? "Thunderbird"                --> doF (W.shift "mail")
-    , className =? "Pidgin"                     --> doF (W.shift "im")
     , className =? "Xmessage"                   --> doFloat
-    , resource =? "urxvt" <&&> title =? "Irssi" --> doF (W.shift "im")
-    , resource =? "urxvt" <&&> title =? "Sup"   --> doF (W.shift "mail")
-    , resource =? "sunbird-bin"                 --> doF (W.shift "mail")
     ]
 
 myLayoutHook = desktopLayoutModifiers $ 
@@ -60,6 +52,8 @@ goToScreen id = do
     ws <- screenWorkspace id
     whenJust ws (windows . W.view)
 
+splitScreen = layoutSplitScreen 3 (Tall 1 (3/100) (1/2))
+
 myNewKeys = [ ("M-" ++ m ++ [key], windows $ f w)
              | (f, m)   <- [(W.greedyView, ""), (W.shift, "S-")]
              , (w, key) <- myWorkspaceHotkeys
@@ -74,12 +68,14 @@ myNewKeys = [ ("M-" ++ m ++ [key], windows $ f w)
              , ("M-<Space>", spawnHere launcher)
              , ("M-S-<Space>", spawnHere termLauncher)
              , ("M-C-<Space>", sendMessage NextLayout)
+             , ("M-'", rescreen)
+             , ("M-S-'", splitScreen)
              ]
 
 myConfig = xfceConfig
     { manageHook  = manageSpawn <+> myManageHook <+> manageHook xfceConfig
     , layoutHook  = myLayoutHook
-    , startupHook = startupHook xfceConfig >> checkKeymap myConfig myNewKeys >> setWMName "LG3D" >> layoutSplitScreen 3 (Tall 1 (3/100) (1/2))
+    , startupHook = startupHook xfceConfig >> checkKeymap myConfig myNewKeys >> setWMName "LG3D" >> splitScreen
     , workspaces  = map fst myWorkspaceHotkeys
     , terminal    = "urxvt"
     }
