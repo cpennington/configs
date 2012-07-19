@@ -1,0 +1,3 @@
+fab <target> ...;
+
+target = ! fab --shortlist | grep "$COMP_CWORD.*"
