@@ -52,7 +52,7 @@ goToScreen id = do
     ws <- screenWorkspace id
     whenJust ws (windows . W.view)
 
-splitScreen = layoutSplitScreen 3 (Tall 1 (3/100) (1/2))
+splitScreen = layoutSplitScreen 2 (Tall 1 (3/100) (1/2))
 
 myNewKeys = [ ("M-" ++ m ++ [key], windows $ f w)
              | (f, m)   <- [(W.greedyView, ""), (W.shift, "S-")]
