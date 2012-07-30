@@ -11,3 +11,6 @@ alias gff='git flow feature'
 alias gfr='git flow release'
 alias gfh='git flow hotfix'
 alias gfs='git flow support'
+
+alias runcms='cd ~/work/mitx && go mitx && rake cms'
+alias runlms='cd ~/work/mitx && go mitx && rake lms'
