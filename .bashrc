@@ -107,6 +107,7 @@ alias go='workon'
 export PATH=~/bin:~/.cabal/bin:$PATH
 export EDITOR=vim
 export LD_PRELOAD="/home/cpennington/utils/stderred/lib64/stderred.so"
+export AWS_CONFIG_FILE=~/.aws
 
 source ~/.cabal/share/compleat-1.0/compleat_setup
 

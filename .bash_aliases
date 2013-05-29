@@ -14,3 +14,9 @@ alias gfs='git flow support'
 
 alias runcms='cd ~/work/mitx && go mitx && rake cms'
 alias runlms='cd ~/work/mitx && go mitx && rake lms'
+
+function aws-cfg() {
+    export BOTO_PATH="/etc/boto.cfg:~/.boto_cfg/$1.cfg"
+    export AWS_DEFAULT_PROFILE="$1"
+}
+
