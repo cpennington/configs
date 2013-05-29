@@ -18,7 +18,8 @@
 
 [user]
     name = Calen Pennington
-    email = calen.pennington@gmail.com
+    email = cale@edx.org
+
 [branch]
     autosetupmerge = true
     autosetuprebase = always
