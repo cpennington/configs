@@ -1,3 +1,4 @@
 fab <target> ...;
 
-target = ! fab --shortlist | grep "$COMP_CWORD.*"
+target = ! fab --shortlist | sed "s/\[.*\] : //" | grep "$COMP_CWORD.*"
+ 
