@@ -36,11 +36,14 @@ myWorkspaceHotkeys = [ ("web", 'w')
                      , ("im", 's')
                      , ("vm", 'v')
                      , ("calendar", 'l')
-                     , ("pandora", 'p')]
+                     , ("pandora", 'p')
+                     , ("editor", 'h')]
+
+terminalCmd = "gnome-terminal --hide-menubar --disable-factory"
 
 makeLauncher yargs run exec close = concat ["exe=`yeganesh ", yargs, "` && ", run, " ", exec, "$exe", close]
 launcher     = makeLauncher "" "eval" "\"exec " "\""
-termLauncher = makeLauncher "-p withterm" "exec urxvt -e" "" ""
+termLauncher = makeLauncher "-p withterm" ("exec " ++ terminalCmd ++ " -e") "" ""
 
 -- By default, Ctrl-C in a prompt hangs XMonad. This is bad,
 -- so we quit the prompt instead
@@ -77,7 +80,7 @@ myConfig = xfceConfig
     , layoutHook  = myLayoutHook
     , startupHook = startupHook xfceConfig >> checkKeymap myConfig myNewKeys >> setWMName "LG3D" >> splitScreen
     , workspaces  = map fst myWorkspaceHotkeys
-    , terminal    = "urxvt"
+    , terminal    = terminalCmd
     }
     `additionalKeysP` myNewKeys
 
