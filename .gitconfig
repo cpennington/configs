@@ -39,4 +39,3 @@
     fixup = !sh -c 'git rebase -i $(git merge-base HEAD ${1:-origin/master})' -
     oneoff = !sh -c 'git commit -m \"${1?Commit message required}\" --dry-run && git checkout -b cale/$(echo \"$1\" | sed \"s/ /-/g\" | tr \"[A-Z]\" \"[a-z]\") && git commit -m \"$1\" && git push' -
     patdiff = difftool --dir-diff --no-prompt --extcmd /home/cpennington/bin/git-difftool_patdiff.sh
-    fixbranch = !sh -c 'OLD=$(git rev-parse --short $1)\\; NEW=$(git log -1 --format=format:%h --grep=\"$(git log -1 --format=format:%s $1)\")\\; echo $OLD $NEW' -
