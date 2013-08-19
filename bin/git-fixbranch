@@ -1,0 +1,14 @@
+#! /bin/bash
+# USAGE: git fixbranch [BRANCH ...]
+#
+# Moves all named branches from their current commits to commits
+# in the history of the current revision, matching branches up
+# based on their subject lines
+
+for BRANCH in "$@"; do
+    OLD=$(git rev-parse --short $BRANCH)
+    NEW=$(git log -1 --format=format:%h --grep="$(git log -1 --format=format:%s $BRANCH)")
+
+    echo $BRANCH: $OLD '->' $NEW
+    git branch -f $BRANCH $NEW
+done
