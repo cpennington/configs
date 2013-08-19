@@ -4,6 +4,7 @@
 [core]
     whitespace=fix,-indent-with-non-tab,trailing-space,cr-at-eol
     excludesfile = /home/cpennington/.gitignore.global
+    attributesfile = /home/cpennington/.gitattributes.global
 
 [alias]
     st = status
