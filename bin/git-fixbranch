@@ -9,6 +9,11 @@ for BRANCH in "$@"; do
     OLD=$(git rev-parse --short $BRANCH)
     NEW=$(git log -1 --format=format:%h --grep="$(git log -1 --format=format:%s $BRANCH)")
 
+    if [ -z $NEW ]; then
+        echo "No commit found for $BRANCH, skipping"
+        continue
+    fi
+
     echo $BRANCH: $OLD '->' $NEW
     git branch -f $BRANCH $NEW
 done
