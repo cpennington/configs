@@ -39,3 +39,6 @@
     fixup = !sh -c 'git rebase -i $(git merge-base HEAD ${1:-origin/master})' -
     oneoff = !sh -c 'git commit -m \"${1?Commit message required}\" --dry-run && git checkout -b cale/$(echo \"$1\" | sed \"s/ /-/g\" | tr \"[A-Z]\" \"[a-z]\") && git commit -m \"$1\" && git push' -
     patdiff = difftool --dir-diff --no-prompt --extcmd /home/cpennington/bin/git-difftool_patdiff.sh
+    trip-travis = !sh -c 'git push -f origin ${1?Branch required}^:$1 && git push origin $1:$1' -
+    fix-pr-chain = !sh -c 'git fixbranch $(git branch | sed "s/\\*//") && git push -f origin $(git branch --merged HEAD | sed "s/\\*//")' -
+
