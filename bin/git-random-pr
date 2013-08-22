@@ -1,0 +1,25 @@
+#! /usr/bin/python
+
+"""
+Open a random pull request from the specified repository
+
+Usage:
+  git-random-pr <user> <repo>
+"""
+
+import requests
+import random
+import webbrowser
+import sys
+import pprint
+from docopt import docopt
+
+
+def main():
+    args = docopt(__doc__)
+    r = requests.get('https://api.github.com/repos/{<user>}/{<repo>}/pulls'.format(**args))
+    pull = random.choice(r.json())
+    webbrowser.open(pull['html_url'])
+
+if __name__ == '__main__':
+    sys.exit(main())
