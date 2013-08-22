@@ -4,7 +4,7 @@
 Open a random pull request from the specified repository
 
 Usage:
-  git-random-pr <user> <repo>
+  git-random-pr USER REPO
 """
 
 import requests
@@ -17,7 +17,7 @@ from docopt import docopt
 
 def main():
     args = docopt(__doc__)
-    r = requests.get('https://api.github.com/repos/{<user>}/{<repo>}/pulls'.format(**args))
+    r = requests.get('https://api.github.com/repos/{USER}/{REPO}/pulls'.format(**args))
     pull = random.choice(r.json())
     webbrowser.open(pull['html_url'])
 
