@@ -1,0 +1,79 @@
+#!/bin/bash
+#
+# This script runs a given command over a range of Git revisions. Note that it
+# will check past revisions out! Exercise caution if there are important
+# untracked files in your working tree.
+#
+# This is derived from from Gary Bernhardt's dotfiles:
+#     https://github.com/garybernhardt/dotfiles
+#
+# Example usage:
+#     $ git run-cmd 'python runtests.py' origin/master..master
+
+set -e
+
+if [[ $1 == -v ]]; then
+    verbose=1
+    shift
+fi
+
+test_command=$1
+shift
+
+if [ $# -eq 0 ]; then
+    log_args='-n 5'
+else
+    log_args="$@"
+fi
+
+main() {
+    enforce_usage
+    run_tests
+}
+
+enforce_usage() {
+    if [ -z "$test_command" ]; then
+        usage
+        exit $E_BADARGS
+    fi
+}
+
+usage() {
+    echo "usage: `basename $0` TEST_COMMAND LOG_ARGS"
+}
+
+run_tests() {
+    if ! git diff --quiet || [ -n "$(git ls-files --other --exclude-standard)" ]; then
+        echo "Refusing to put un-committed changes at risk. Please stash them and retry"
+        exit
+    fi
+    current_rev=$(git symbolic-ref --short -q HEAD || git rev-parse HEAD)
+    revs=$(log_command git log --format=format:%h --reverse $log_args)
+
+    for rev in $revs; do
+        debug "Checking out: $(git log --oneline -1 $rev)"
+        log_command git checkout --quiet $rev
+        log_command $test_command
+        log_command git reset --hard
+    done
+    debug "OK for all revisions!"
+}
+
+log_command() {
+    debug "=> $*"
+    eval $*
+}
+
+debug() {
+    if [ $verbose ]; then
+        echo $* >&2
+    fi
+}
+
+cleanup() {
+    log_command git checkout --quiet $current_rev
+}
+
+trap cleanup 0
+
+main
