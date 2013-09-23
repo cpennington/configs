@@ -118,3 +118,6 @@ source ~/.cabal/share/compleat-1.0/compleat_setup
 PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
 
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
+
+# added by travis gem
+source /home/cpennington/.travis/travis.sh
