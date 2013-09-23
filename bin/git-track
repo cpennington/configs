@@ -1,0 +1,9 @@
+#! /bin/bash
+
+set -e
+
+BRANCH=${1:-$(git rev-parse --abbrev-ref HEAD)}
+
+git config branch.$BRANCH.remote origin
+git config branch.$BRANCH.merge refs/heads/$BRANCH
+git config branch.$BRANCH.rebase true
