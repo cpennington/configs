@@ -20,3 +20,4 @@ function aws-cfg() {
     export AWS_DEFAULT_PROFILE="$1"
 }
 
+alias git=hub
