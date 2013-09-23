@@ -111,6 +111,8 @@ export AWS_CONFIG_FILE=~/.aws
 
 source ~/.cabal/share/compleat-1.0/compleat_setup
 
+(which opam > /dev/null) && eval $(opam config -env)
+
 [[ $- == *i* ]]   &&   . ~/utils/git-prompt/git-prompt.sh
 
 PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting

@@ -20,3 +20,6 @@ fi
 if [ -d "$HOME/bin" ] ; then
     PATH="$HOME/bin:$PATH"
 fi
+
+# OPAM configuration
+. /home/cpennington/.opam/opam-init/init.sh > /dev/null 2> /dev/null || true
