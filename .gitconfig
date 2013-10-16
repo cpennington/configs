@@ -42,3 +42,8 @@
     fix-pr-chain = !sh -c 'git fixbranch $(git branch | sed "s/\\*//") && git push -f origin $(git branch --merged HEAD | sed "s/\\*//")' -
     irebase = imerge start --goal=rebase --first-parent
 
+[remote "upstream"]
+    fetch = +refs/pull/*/head:refs/remotes/upstream/pr/*
+
+[remote "origin"]
+    fetch = +refs/pull/*/head:refs/remotes/origin/pr/*
