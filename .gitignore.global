@@ -2,3 +2,7 @@
 *.pyc
 doc/tags
 .ropeproject
+*.sublime-project
+*.sublime-workspace
+.cabal-sandbox
+cabal.sandbox.config
