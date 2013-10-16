@@ -12,13 +12,50 @@ import random
 import webbrowser
 import sys
 import pprint
+import dateutil.parser
+from datetime import datetime
+from pytz import utc
 from docopt import docopt
+
+def weighted_choice(data, weights):
+    choice = random.random() * sum(weights)
+    for i, w in enumerate(weights):
+        choice -= w
+        if choice < 0:
+            return data[i]
+
+def comments(pr):
+    return requests.get(pr['comments_url']).json()
+
+def weight_pr(pr):
+    # Only look at open prs
+    if pr['state'] != 'open':
+        return 0
+
+    now = datetime.now(utc)
+    create_age = now - dateutil.parser.parse(pr['created_at']).astimezone(utc)
+    update_age = now - dateutil.parser.parse(pr['updated_at']).astimezone(utc)
+
+    return create_age.total_seconds()
 
 
 def main():
     args = docopt(__doc__)
-    r = requests.get('https://api.github.com/repos/{USER}/{REPO}/pulls'.format(**args))
-    pull = random.choice(r.json())
+    data = []
+    page_num = 0
+    while True:
+        page = requests.get(
+            'https://api.github.com/repos/{USER}/{REPO}/pulls'.format(**args),
+            params={'page': page_num}
+        ).json()
+        if not page:
+            break
+        page_num += 1
+        data.extend(page)
+
+    #pprint.pprint(data)
+    print len(data), ([pr['number'] for pr in data], [weight_pr(pr) for pr in data])
+    pull = weighted_choice(data, [weight_pr(pr) for pr in data])
     webbrowser.open(pull['html_url'])
 
 if __name__ == '__main__':
