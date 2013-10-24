@@ -4,18 +4,23 @@
 Open a random pull request from the specified repository
 
 Usage:
-  git-random-pr USER REPO
+  git-random-pr [USER REPO]
 """
 
-import requests
-import random
-import webbrowser
-import sys
-import pprint
 import dateutil.parser
+import envoy
+import pprint
+import random
+import re
+import requests
+import sys
+import webbrowser
+
 from datetime import datetime
-from pytz import utc
 from docopt import docopt
+from itertools import chain
+from pytz import utc
+
 
 def weighted_choice(data, weights):
     choice = random.random() * sum(weights)
@@ -24,8 +29,10 @@ def weighted_choice(data, weights):
         if choice < 0:
             return data[i]
 
+
 def comments(pr):
     return requests.get(pr['comments_url']).json()
+
 
 def weight_pr(pr):
     # Only look at open prs
@@ -39,23 +46,38 @@ def weight_pr(pr):
     return create_age.total_seconds()
 
 
-def main():
-    args = docopt(__doc__)
-    data = []
+def pull_requests(user, repo):
     page_num = 0
     while True:
         page = requests.get(
-            'https://api.github.com/repos/{USER}/{REPO}/pulls'.format(**args),
+            'https://api.github.com/repos/{user}/{repo}/pulls'.format(user=user, repo=repo),
             params={'page': page_num}
         ).json()
         if not page:
             break
         page_num += 1
-        data.extend(page)
+        for pr in page:
+            yield pr
 
-    #pprint.pprint(data)
-    print len(data), ([pr['number'] for pr in data], [weight_pr(pr) for pr in data])
-    pull = weighted_choice(data, [weight_pr(pr) for pr in data])
+
+def main():
+    args = docopt(__doc__)
+
+    if args.get('USER') and args.get('REPO'):
+        repos = [(args.get('USER'), args.get('REPO'))]
+    else:
+        repos = set()
+        for remote in envoy.run('git remote -v').std_out.split('\n'):
+            remote = remote.strip()
+            match = re.search(r"github\.com.(?P<user>[^/]*)/(?P<repo>.*)\.git", remote)
+            if match:
+                repos.add((match.group('user'), match.group('repo')))
+
+    prs = list(chain.from_iterable(pull_requests(u, r) for (u, r) in repos))
+
+    #pprint.pprint(prs)
+    #print len(prs), ([pr['number'] for pr in prs], [weight_pr(pr) for pr in prs])
+    pull = weighted_choice(prs, [weight_pr(pr) for pr in prs])
     webbrowser.open(pull['html_url'])
 
 if __name__ == '__main__':
