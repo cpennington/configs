@@ -22,11 +22,18 @@ import qualified XMonad.StackSet as W
 
 
 myManageHook = composeAll
-    [ title =? "Do"                             --> doIgnore
-    , className =? "Xmessage"                   --> doFloat
+    [ title =? "Do"                                 --> doIgnore
+    , className =? "Xmessage"                       --> doFloat
+    , appName =? "sublime_text"                     --> doF (W.shift "editor")
+    , appName =? "google-chrome"                    --> doF (W.shift "web")
+    , appName =? "mail.google.com__mail_u_1"        --> doF (W.shift "mail")
+    , appName =? "mail.google.com__mail_u_0"        --> doF (W.shift "mail")
+    , appName =? "www.google.com__calendar_render"  --> doF (W.shift "mail")
+    , appName =? "xchat"                            --> doF (W.shift "im")
+    , appName =? "hipchat"                          --> doF (W.shift "im")
     ]
 
-myLayoutHook = desktopLayoutModifiers $ 
+myLayoutHook = desktopLayoutModifiers $
     Full ||| (Tall 1 (3/100) (3/4)) ||| (spiral (3%4)) ||| (TwoPane (3/100) (1/2))
 
 myWorkspaceHotkeys = [ ("web", 'w')
