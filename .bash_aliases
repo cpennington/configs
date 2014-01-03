@@ -27,3 +27,7 @@ alias g=hub
 
 __git_complete g __git_main
 
+export TODOTXT_DEFAULT_ACTION=ls
+export TODOTXT_SORT_COMMAND='env LC_COLLATE=C sort -k 2,2 -k 1,1n'
+alias t="~/utils/todo.txt-cli/todo.sh -d ~/.todo.cfg"
+

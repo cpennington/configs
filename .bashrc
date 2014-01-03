@@ -104,7 +104,7 @@ fi
 
 alias go='workon'
 
-export PATH=~/bin:~/.cabal/bin:$PATH
+export PATH=~/bin:~/.cabal/bin:~/utils/todo.txt-cli:$PATH
 export EDITOR=vim
 export LD_PRELOAD="/home/cpennington/utils/stderred/lib64/stderred.so"
 export AWS_CONFIG_FILE=~/.aws
