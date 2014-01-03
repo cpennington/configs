@@ -92,6 +92,7 @@ export PATH=~/bin:~/.cabal/bin:~/utils/todo.txt-cli:$PATH
 export EDITOR=vim
 export LD_PRELOAD="/home/cpennington/utils/stderred/lib64/stderred.so"
 export AWS_CONFIG_FILE=~/.aws
+export JSCOVER_JAR=~/work/util/jscover/target/dist/JSCover.jar
 
 source ~/.cabal/share/compleat-1.0/compleat_setup
 
