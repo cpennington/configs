@@ -100,11 +100,27 @@ source ~/.cabal/share/compleat-1.0/compleat_setup
 
 source ~/utils/git/contrib/completion/git-prompt.sh
 
+
+function _global_todo {
+    TODO=$(t | head -n 1)
+    if [[ ! -z $TODO ]]; then
+        echo "Global Todo: $TODO\n"
+    fi
+}
+
+function _git_todo {
+    TODO=$(git todo | grep "\[ \]" | head -n 1)
+    if [[ ! -z $TODO ]]; then
+        echo "Git Todo: $TODO\n"
+    fi
+}
+
+
 GIT_PS1_SHOWDIRTYSTATE=1
 GIT_PS1_SHOWUPSTREAM="auto verbose name"
 GIT_PS1_SHOWCOLORHINTS=1
 GIT_PS1_DESCRIBE_STYLE=branch
-export PROMPT_COMMAND='__git_ps1 "\n[\t]: \w" "\n$ " " (%s | $(git rev-parse --short HEAD))"'
+export PROMPT_COMMAND='__git_ps1 "\n[\t]: \w" "\n$(_global_todo)$(_git_todo)$ " " (%s | $(git rev-parse --short HEAD))"'
 
 PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
 
