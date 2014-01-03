@@ -20,4 +20,10 @@ function aws-cfg() {
     export AWS_DEFAULT_PROFILE="$1"
 }
 
+source ~/utils/git/contrib/completion/git-completion.bash
+
 alias git=hub
+alias g=hub
+
+__git_complete g __git_main
+
