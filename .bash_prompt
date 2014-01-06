@@ -1,0 +1,34 @@
+#! /bin/bash
+
+function _global_todo {
+    TODO=$(t | head -n 1)
+    if [[ ! -z $TODO ]]; then
+        echo "Global Todo: $TODO\n"
+    fi
+}
+
+function _git_todo {
+    TODO=$(git todo 2> /dev/null | grep "\[ \]" | head -n 1)
+    if [[ ! -z $TODO ]]; then
+        echo "Git Todo: $TODO\n"
+    fi
+}
+
+function _git_rev {
+    echo $(git rev-parse --short HEAD 2> /dev/null)
+}
+
+function _virtenv {
+    if [[ ! -z $VIRTUAL_ENV ]]; then
+        echo "($(basename $VIRTUAL_ENV)) "
+    fi
+}
+
+
+GIT_PS1_SHOWDIRTYSTATE=1
+GIT_PS1_SHOWUPSTREAM="auto verbose name"
+GIT_PS1_SHOWCOLORHINTS=1
+GIT_PS1_DESCRIBE_STYLE=branch
+export PROMPT_COMMAND='__git_ps1 "\n[\t]: $(_virtenv)\w" "\n$(_global_todo)$(_git_todo)$ " " (%s | $(_git_rev))"'
+
+

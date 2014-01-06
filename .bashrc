@@ -70,7 +70,7 @@ alias l='ls -CF'
 #   sleep 10; alert
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
-# Alias definitions.
+    # Alias definitions.
 # You may want to put all your additions into a separate file like
 # ~/.bash_aliases, instead of adding them here directly.
 # See /usr/share/doc/bash-doc/examples in the bash-doc package.
@@ -95,32 +95,11 @@ export AWS_CONFIG_FILE=~/.aws
 export JSCOVER_JAR=~/work/util/jscover/target/dist/JSCover.jar
 
 source ~/.cabal/share/compleat-1.0/compleat_setup
+source ~/.bash_prompt
 
 (which opam > /dev/null) && eval $(opam config -env)
 
 source ~/utils/git/contrib/completion/git-prompt.sh
-
-
-function _global_todo {
-    TODO=$(t | head -n 1)
-    if [[ ! -z $TODO ]]; then
-        echo "Global Todo: $TODO\n"
-    fi
-}
-
-function _git_todo {
-    TODO=$(git todo | grep "\[ \]" | head -n 1)
-    if [[ ! -z $TODO ]]; then
-        echo "Git Todo: $TODO\n"
-    fi
-}
-
-
-GIT_PS1_SHOWDIRTYSTATE=1
-GIT_PS1_SHOWUPSTREAM="auto verbose name"
-GIT_PS1_SHOWCOLORHINTS=1
-GIT_PS1_DESCRIBE_STYLE=branch
-export PROMPT_COMMAND='__git_ps1 "\n[\t]: \w" "\n$(_global_todo)$(_git_todo)$ " " (%s | $(git rev-parse --short HEAD))"'
 
 PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
 
