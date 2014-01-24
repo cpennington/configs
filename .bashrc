@@ -93,6 +93,7 @@ export EDITOR=vim
 export LD_PRELOAD="/home/cpennington/utils/stderred/lib64/stderred.so"
 export AWS_CONFIG_FILE=~/.aws
 export JSCOVER_JAR=~/work/util/jscover/target/dist/JSCover.jar
+export VAGRANT_MOUNT_BASE=~/work
 
 source ~/.cabal/share/compleat-1.0/compleat_setup
 source ~/.bash_prompt
