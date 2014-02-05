@@ -89,7 +89,7 @@ fi
 alias go='workon'
 
 export PATH=~/bin:~/.cabal/bin:~/utils/todo.txt-cli:$PATH
-export EDITOR=vim
+export EDITOR="subl --new-window --wait --command toggle_side_bar"
 export LD_PRELOAD="/home/cpennington/utils/stderred/lib64/stderred.so"
 export AWS_CONFIG_FILE=~/.aws
 export JSCOVER_JAR=~/work/util/jscover/target/dist/JSCover.jar

@@ -1,3 +1,5 @@
+#! /bin/bash
+
 alias ack='ack-grep'
 alias ssh='TERM=xterm ssh'
 alias gsd='sudo ~/utils/get-shit-done/get-shit-done.sh'
@@ -31,3 +33,6 @@ export TODOTXT_DEFAULT_ACTION=ls
 export TODOTXT_SORT_COMMAND='env LC_COLLATE=C sort -k 2,2 -k 1,1n'
 alias t="~/utils/todo.txt-cli/todo.sh -d ~/.todo.cfg"
 
+alias o="subl"
+alias e="$EDITOR"
+alias se="sudo vim"

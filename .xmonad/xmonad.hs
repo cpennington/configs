@@ -24,7 +24,6 @@ import qualified XMonad.StackSet as W
 myManageHook = composeAll
     [ title =? "Do"                                 --> doIgnore
     , className =? "Xmessage"                       --> doFloat
-    , appName =? "sublime_text"                     --> doF (W.shift "editor")
     , appName =? "google-chrome"                    --> doF (W.shift "web")
     , appName =? "mail.google.com__mail_u_1"        --> doF (W.shift "mail")
     , appName =? "mail.google.com__mail_u_0"        --> doF (W.shift "mail")
