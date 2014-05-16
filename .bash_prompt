@@ -18,6 +18,31 @@ function _git_rev {
     echo $(git rev-parse --short HEAD 2> /dev/null)
 }
 
+function _git_ci {
+    TOP_LEVEL=$(git rev-parse --show-toplevel)
+    CACHE_NAME=.ci-status.cache
+    CACHE=${TOP_LEVEL}/${CACHE_NAME}
+    if [[ ! -e ${CACHE} ]]; then
+        touch ${CACHE}
+        hub ci-status > ${CACHE} &
+    fi
+    if [[ ! -z $(find ${TOP_LEVEL} -maxdepth 1 -type f -name "${CACHE_NAME}" -mmin +1) ]]; then
+        touch ${CACHE}
+        hub ci-status > ${CACHE} &
+    fi
+    STATUS=$(cat ${CACHE})
+
+    case ${STATUS} in
+        success      ) tput setaf 2 ;;
+        error        ) tput setaf 1 ;;
+        failure      ) tput setaf 1 ;;
+        pending      ) tput setaf 3 ;;
+        "no status"  ) tput setaf 3 ;;
+    esac
+    echo -n ${STATUS}
+    tput sgr0
+}
+
 function _virtenv {
     if [[ ! -z $VIRTUAL_ENV ]]; then
         echo "($(basename $VIRTUAL_ENV)) "
@@ -29,6 +54,6 @@ GIT_PS1_SHOWDIRTYSTATE=1
 GIT_PS1_SHOWUPSTREAM="auto verbose name"
 GIT_PS1_SHOWCOLORHINTS=1
 GIT_PS1_DESCRIBE_STYLE=branch
-export PROMPT_COMMAND='__git_ps1 "\n[\t]: $(_virtenv)\w" "\n$(_global_todo)$(_git_todo)$ " " (%s | $(_git_rev))"'
+export PROMPT_COMMAND='__git_ps1 "\n[\t]: $(_virtenv)\w" "\n$(_global_todo)$(_git_todo)$ " " (%s | $(_git_rev) $(_git_ci))"'
 
 
