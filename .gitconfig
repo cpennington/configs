@@ -1,46 +1,56 @@
 [color]
-    ui = auto
+ui = auto
 
 [core]
-    whitespace=fix,-indent-with-non-tab,trailing-space,cr-at-eol
-    excludesfile = /home/cpennington/.gitignore.global
-    attributesfile = /home/cpennington/.gitattributes.global
+whitespace=fix,-indent-with-non-tab,trailing-space,cr-at-eol
+excludesfile = /home/cpennington/.gitignore.global
+attributesfile = /home/cpennington/.gitattributes.global
 
 [alias]
-    st = status
-    ci = commit
-    br = branch
-    co = checkout
-    df = diff
-    lg = log -p
-    hist = log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short
-    type = cat-file -t
-    dump = cat-file -p
+st = status
+ci = commit
+br = branch
+co = checkout
+df = diff
+hist = log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short
+type = cat-file -t
+dump = cat-file -p
 
 [user]
-    name = Calen Pennington
-    email = cale@edx.org
+name = Calen Pennington
+email = cale@edx.org
 
 [branch]
-    autosetupmerge = true
-    autosetuprebase = always
+autosetupmerge = true
+autosetuprebase = always
 
 [push]
-	default = current
+default = current
 
 [log]
-	follow = true
+follow = true
 
 [rebase]
-	autosquash = true
+autosquash = true
 
 [alias]
-    fixup = !sh -c 'git rebase -i $(git merge-base HEAD ${1:-origin/master})' -
-    oneoff = !sh -c 'git commit -m \"${1?Commit message required}\" --dry-run && git checkout -b cale/$(echo \"$1\" | sed \"s/ /-/g\" | tr \"[A-Z]\" \"[a-z]\") && git commit -m \"$1\" && git push' -
-    patdiff = difftool --dir-diff --no-prompt --extcmd /home/cpennington/bin/git-difftool_patdiff.sh
-    trip-travis = !sh -c 'git push -f origin ${1?Branch required}^:$1 && git push origin $1:$1' -
-    fix-pr-chain = !sh -c 'git fixbranch $(git branch | sed "s/\\*//") && git push -f origin $(git branch --merged HEAD | sed "s/\\*//")' -
-    irebase = imerge start --goal=rebase --first-parent
-    prep-commit = stash -k -u
-    todo = checklist
-    setup-pull-requests = !sh -c 'git config --add remote.${1?Remote required}.fetch +refs/pull/*/head:refs/remotes/$1/pr/*' -
+fixup = !sh -c 'git rebase -i $(git merge-base HEAD ${1:-origin/master})' -
+oneoff = !sh -c 'git commit -m \"${1?Commit message required}\" --dry-run && git checkout -b cale/$(echo \"$1\" | sed \"s/ /-/g\" | tr \"[A-Z]\" \"[a-z]\") && git commit -m \"$1\" && git push' -
+patdiff = difftool --dir-diff --no-prompt --extcmd /home/cpennington/bin/git-difftool_patdiff.sh
+trip-travis = !sh -c 'git push -f origin ${1?Branch required}^:$1 && git push origin $1:$1' -
+fix-pr-chain = !sh -c 'git fixbranch $(git branch | sed "s/\\*//") && git push -f origin $(git branch --merged HEAD | sed "s/\\*//")' -
+irebase = imerge start --goal=rebase --first-parent
+prep-commit = stash -k -u
+todo = checklist
+setup-pull-requests = !sh -c 'git config --add remote.${1?Remote required}.fetch +refs/pull/*/head:refs/remotes/$1/pr/*' -
+
+[tig]
+show-id = yes
+show-author = abbreviated
+show-date = relative
+
+[gardener]
+username = cpennington
+token = 2b25c795bb42d11b86e1610640f4bb08cdbc001c
+filter-labels = waiting on LMS
+filter-state = open
