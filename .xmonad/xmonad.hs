@@ -79,6 +79,7 @@ myNewKeys = [ ("M-" ++ m ++ [key], windows $ f w)
              , ("M-C-<Space>", sendMessage NextLayout)
              , ("M-'", rescreen)
              , ("M-S-'", splitScreen)
+             , ("M-,", safeSpawn "xfce4-display-settings" ["--minimal"])
              ]
 
 myConfig = xfceConfig
