@@ -3,12 +3,12 @@
 import sys
 import webbrowser
 import getpass
+import yaml
 from datetime import datetime
 from pytz import UTC
 from github3 import GitHub
 from operator import attrgetter
 from os.path import expanduser
-from ConfigParser import SafeConfigParser
 
 def two_factor_auth():
     code = ''
@@ -28,9 +28,7 @@ def commit_date(commit):
 def main():
     gh = GitHub()
 
-    config = SafeConfigParser()
-    config.read(expanduser('~/.gitconfig'))
-    cfg_vars = dict(config.items('gardener'))
+    cfg_vars = yaml.safe_load(open(expanduser('~/.git-gardener.yaml')))
 
     username = cfg_vars.get('username')
     if username is None:
@@ -48,34 +46,39 @@ def main():
 
     gh.login(username, token=token)
 
-    repo = gh.repository('edx', 'edx-platform')
-    for issue in repo.iter_issues(**filters):
-        if not issue.pull_request:
-            continue
+    repos = cfg_vars.get('repos', [])
 
-        pr = repo.pull_request(issue.number)
+    for repo_name in repos:
+        org, _, name = repo_name.partition(':')
+        print repo_name, org, name
+        repo = gh.repository(org, name)
+        for issue in repo.iter_issues(**filters):
+            if not issue.pull_request:
+                continue
 
-        comments = sorted(pr.iter_comments(), key=attrgetter('updated_at'), reverse=True)
-        issue_comments = sorted(pr.iter_issue_comments(), key=attrgetter('updated_at'), reverse=True)
-        commits = sorted(pr.iter_commits(), key=commit_date, reverse=True)
+            pr = repo.pull_request(issue.number)
 
-        latest_data = []
-        if comments:
-            latest_data.append((comments[0].updated_at, comments[0].user.login))
+            comments = sorted(pr.iter_comments(), key=attrgetter('updated_at'), reverse=True)
+            issue_comments = sorted(pr.iter_issue_comments(), key=attrgetter('updated_at'), reverse=True)
+            commits = sorted(pr.iter_commits(), key=commit_date, reverse=True)
 
-        if issue_comments:
-            latest_data.append((issue_comments[0].updated_at, issue_comments[0].user.login))
+            latest_data = []
+            if comments:
+                latest_data.append((comments[0].updated_at, comments[0].user.login))
 
-        if commits:
-            latest_data.append((commit_date(commits[0]), commits[0].committer_as_User().login))
+            if issue_comments:
+                latest_data.append((issue_comments[0].updated_at, issue_comments[0].user.login))
 
-        if not latest_data:
-            continue
+            if commits:
+                latest_data.append((commit_date(commits[0]), commits[0].committer_as_User().login))
 
-        latest_date, latest_user = max(latest_data)
+            if not latest_data:
+                continue
 
-        if latest_user != username:
-            webbrowser.open(pr.html_url)
+            latest_date, latest_user = max(latest_data)
+
+            if latest_user != username:
+                webbrowser.open(pr.html_url)
 
 if __name__ == '__main__':
     sys.exit(main())
