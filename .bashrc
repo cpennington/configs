@@ -83,7 +83,7 @@ source /usr/local/bin/virtualenvwrapper.sh
 
 alias go='workon'
 
-export PATH=~/bin:~/.cabal/bin:~/utils/todo.txt-cli:$PATH
+export PATH=./.cabal-sandbox/bin:~/bin:~/.cabal/bin:~/utils/todo.txt-cli:$PATH
 export EDITOR="subl --new-window --wait --command toggle_side_bar"
 export LD_PRELOAD="/home/cpennington/utils/stderred/lib64/stderred.so"
 export AWS_CONFIG_FILE=~/.aws
