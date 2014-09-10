@@ -12,6 +12,14 @@
 !.Xdefaults
 !.xmodmap
 
+# Don't ignore fish functions
+!.config/
+.config/*
+!.config/fish/
+.config/fish/*
+!.config/fish/functions/
+
+# Don't ignore xmonad.hs
 !.xmonad
 .xmonad/*
 !.xmonad/xmonad.hs
