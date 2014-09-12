@@ -7,3 +7,4 @@ doc/tags
 .cabal-sandbox
 cabal.sandbox.config
 .ci-status.cache
+.venv
