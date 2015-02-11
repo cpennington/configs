@@ -22,10 +22,14 @@ set PATH ~/bin $PATH
 set PATH ~/.cabal/bin $PATH
 set PATH ./.cabal-sandbox/bin $PATH
 set PATH ~/utils/todo.txt-cli $PATH
-set PATH ~/.rvm/bin $PATH
+set PATH ~/.rbenv/bin $PATH
 
-set EDITOR "subl --new-window --wait --command toggle_side_bar"
-set AWS_CONFIG_FILE ~/.aws
-set JSCOVER_JAR ~/work/util/jscover/target/dist/JSCover.jar
-set VAGRANT_MOUNT_BASE ~/work
-set PROJECT_HOME ~/work
+set -xU EDITOR "subl --new-window --wait --command toggle_side_bar"
+set -xU AWS_CONFIG_FILE ~/.aws
+set -xU JSCOVER_JAR ~/work/util/jscover/target/dist/JSCover.jar
+set -xU VAGRANT_MOUNT_BASE ~/work
+set -xU PROJECT_HOME ~/work
+set -xU SELENIUM_BROWSER chrome
+
+set -gx RBENV_ROOT ~/.rbenv
+. (rbenv init -|psub)
