@@ -14,6 +14,9 @@ set fish_theme vengefulpickle
 # Load oh-my-fish configuration.
 . $fish_path/oh-my-fish.fish
 
+# Base16 Shell
+eval sh $HOME/utils/base16-shell/base16-colors.dark.sh
+
 . $HOME/utils/virtualfish/virtual.fish
 . $HOME/utils/virtualfish/auto_activation.fish
 . $HOME/utils/virtualfish/projects.fish
