@@ -30,7 +30,6 @@ set PATH ~/.rbenv/bin $PATH
 set -xU EDITOR "subl --new-window --wait --command toggle_side_bar"
 set -xU AWS_CONFIG_FILE ~/.aws
 set -xU JSCOVER_JAR ~/work/util/jscover/target/dist/JSCover.jar
-set -xU VAGRANT_MOUNT_BASE ~/work
 set -xU PROJECT_HOME ~/work
 set -xU SELENIUM_BROWSER chrome
 
