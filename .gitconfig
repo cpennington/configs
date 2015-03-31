@@ -46,9 +46,19 @@ todo = checklist
 setup-pull-requests = !sh -c 'git config --add remote.${1?Remote required}.fetch +refs/pull/*/head:refs/remotes/$1/pr/*' -
 
 [tig]
-show-id = yes
-show-author = abbreviated
-show-date = relative
+main-view = id:yes \
+            author:full \
+            date:relative \
+            commit-title:graph=yes,refs=yes
+
+[tig "bind"]
+    main = = !git commit --fixup %(commit)
+    main = F !git fixup %(commit)
+    stage = <Up> move-up
+    stage = <Down> move-down
+    stage = <Left> previous
+    stage = <Right> next
+    stage = <Enter> :/^@@
 
 [gardener]
 username = cpennington
