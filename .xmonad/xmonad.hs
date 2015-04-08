@@ -17,6 +17,7 @@ import XMonad.Prompt.Ssh
 import XMonad.Prompt.XMonad
 import XMonad.Util.EZConfig
 import XMonad.Util.Run
+import XMonad.Hooks.Place (placeHook, smart)
 import qualified Data.Map as M
 import qualified XMonad.StackSet as W
 
@@ -30,6 +31,7 @@ myManageHook = composeAll
     , appName =? "www.google.com__calendar_render"  --> doF (W.shift "mail")
     , appName =? "xchat"                            --> doF (W.shift "im")
     , appName =? "hipchat"                          --> doF (W.shift "im")
+    , appName =? "xfce4-appfinder"                  --> (placeHook (smart (0.5, 0.5)) <+> doFloat)
     ]
 
 myLayoutHook = desktopLayoutModifiers $
@@ -77,6 +79,7 @@ myNewKeys = [ ("M-" ++ m ++ [key], windows $ f w)
              , ("M-'", rescreen)
              , ("M-S-'", splitScreen)
              , ("M-,", safeSpawn "xfce4-display-settings" ["--minimal"])
+             , ("M-<Space>", safeSpawn "xfce4-appfinder" ["--collapsed"])
              ]
 
 myConfig = xfceConfig
