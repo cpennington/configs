@@ -47,7 +47,7 @@ myWorkspaceHotkeys = [ ("web", 'w')
                      , ("pandora", 'p')
                      , ("editor", 'h')]
 
-terminalCmd = "gnome-terminal --hide-menubar --disable-factory"
+terminalCmd = "gnome-terminal --hide-menubar"
 
 makeLauncher yargs run exec close = concat ["exe=`yeganesh ", yargs, "` && ", run, " ", exec, "$exe", close]
 launcher     = makeLauncher "" "eval" "\"exec " "\""
