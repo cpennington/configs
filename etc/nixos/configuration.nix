@@ -36,19 +36,30 @@
   # List packages installed in system profile. To search by name, run:
   # $ nix-env -qaP | grep wget
   environment.systemPackages = with pkgs; [
-    (pkgs.lib.overrideDerivation pkgs.git (attrs: { version = "2.2.2"; }))
+    git
     python3
-    python2
+    python2Full
+    python27Packages.virtualenv
+    python27Packages.pip
+    python27Packages.paver
     fish
     inconsolata
+    corefonts
+    ubuntu_font_family
     vim
     firefox
     chromium
     networkmanagerapplet
-    gnome3.dconf
-    gnome3.gnome_icon_theme
-    gnome3.gnome_themes_standard
     hipchat
+    dropbox
+    keepassx2
+    sublime3
+    gitAndTools.tig
+    ghc.ghc784
+    xchat
+    vagrant
+    linuxPackages.virtualbox
+    mysql
   ];
 
   # List services that you want to enable:
@@ -78,9 +89,15 @@
   # Enable the KDE Desktop Environment.
   # services.xserver.displayManager.kdm.enable = true;
   # services.xserver.desktopManager.kde4.enable = true;
+  services.xserver.desktopManager.gnome3.enable = true;
   services.xserver.desktopManager.xfce.enable = true;
   services.xserver.desktopManager.xterm.enable = false;
   services.xserver.desktopManager.default = "xfce";
+
+  services.mongodb.enable = true;
+  services.mongodb.dbpath = "/mnt/external/mongodb";
+
+  services.syslogd.enable = true;
 
   services.dbus.enable = true;
 
@@ -98,4 +115,19 @@
 
   swapDevices = [ { device = "/dev/sda3"; } ];
 
+  time.timeZone = "America/New_York";
+
+
+   fonts = {
+     enableFontDir = true;
+     enableGhostscriptFonts = true;
+     fonts = with pkgs; [
+       inconsolata  # monospaced
+       corefonts  # Micrsoft free fonts
+       ubuntu_font_family  # Ubuntu fonts
+     ];
+   };
+  services.nfs.server.enable = true;
+
+  security.pam.loginLimits = [ { domain = "*"; item = "nofile"; type = "-"; value = "999999"; }];
 }
