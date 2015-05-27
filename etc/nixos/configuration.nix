@@ -10,7 +10,13 @@
       /etc/nixos/hardware-configuration.nix
     ];
 
-  nixpkgs.config.allowUnfree = true;
+  nixpkgs.config = {
+    allowUnfree = true;
+    firefox = {
+      enableGoogleTalkPlugin = true;
+      enableAdobeFlash = true;
+    };
+  };
 
   # Use the GRUB 2 boot loader.
   boot.loader.grub.enable = true;
@@ -42,6 +48,13 @@
     python27Packages.virtualenv
     python27Packages.pip
     python27Packages.paver
+    #pkgs.stdenv.lib.overrideDerivation fish (oldAttrs: {
+    #  name = "fish-master-cec1dc";
+    #  src = pkgs.fetchurl {
+    #    url = "https://github.com/fish-shell/fish-shell/archive/cec1dc20956ece1d475641fcf59e0f46a92b8917.tar.gz";
+    #    md5 = "ea24070abae4dbb298fb04df2dee695b";
+    #  };
+    #})
     fish
     inconsolata
     corefonts
@@ -57,9 +70,9 @@
     gitAndTools.tig
     ghc.ghc784
     xchat
+    hexchat
     vagrant
     linuxPackages.virtualbox
-    mysql
   ];
 
   # List services that you want to enable:
@@ -83,9 +96,13 @@
 
   # Enable the touchpad
   services.xserver.synaptics.enable = true;
-  services.xserver.synaptics.twoFingerScroll = true;
-  
 
+  # Enable nvidia drivers
+  services.xserver.videoDrivers = ["nvidia"];
+
+  # Enable hardware acceleration for 32bit colors
+  hardware.opengl.driSupport32Bit = true;
+  
   # Enable the KDE Desktop Environment.
   # services.xserver.displayManager.kdm.enable = true;
   # services.xserver.desktopManager.kde4.enable = true;
@@ -97,6 +114,14 @@
   services.mongodb.enable = true;
   services.mongodb.dbpath = "/mnt/external/mongodb";
 
+  services.mysql = {
+    enable = true;
+    package = pkgs.mysql55;
+    socketFile = "/tmp/mysql.sock";
+  };
+
+  services.memcached.enable = true;
+
   services.syslogd.enable = true;
 
   services.dbus.enable = true;
@@ -105,7 +130,7 @@
   users.extraUsers.cpennington = {
     isNormalUser = true;
     uid = 1000;
-    extraGroups = ["wheel" "networkmanager"];
+    extraGroups = ["wheel" "networkmanager" "mysql"];
   };
 
   fileSystems = {
@@ -130,4 +155,15 @@
   services.nfs.server.enable = true;
 
   security.pam.loginLimits = [ { domain = "*"; item = "nofile"; type = "-"; value = "999999"; }];
+ 
+  nix.binaryCaches = [
+    "https://cache.nixos.org"
+    "https://hydra.nixos.org"
+  ];
+
+  boot.kernel.sysctl."fs.inotify.max_user_watches" = 524288;
+  boot.kernel.sysctl."fs.inotify.max_user_instances" = 524288;
+  networking.extraHosts = ''
+    127.0.0.1 localhost.edx.org
+  '';
 }
