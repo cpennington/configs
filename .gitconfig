@@ -53,6 +53,8 @@ main-view = id:yes \
 
 [tig "bind"]
     main = = !git commit --fixup %(commit)
+    diff = = !git commit --fixup %(commit)
+    log = = !git commit --fixup %(commit)
     main = F !git fixup %(commit)
     stage = <Up> move-up
     stage = <Down> move-down
