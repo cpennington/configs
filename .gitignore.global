@@ -9,3 +9,4 @@ cabal.sandbox.config
 .ci-status.cache
 .venv
 shell.nix
+.tox
