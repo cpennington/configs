@@ -6,5 +6,6 @@ let
     self = {
         impurePythonEnv = callPackage ./python.nix { };
         impureNodeEnv = callPackage ./node.nix { };
+        impureHaskellEnv = callPackage ./haskell.nix { };
     };
 in self
