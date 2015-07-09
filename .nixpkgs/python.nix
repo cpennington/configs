@@ -32,12 +32,24 @@ mkVirtualenv1211 = {virtualenv}:
     };
   });
 
+mkXmlsecWithOpenssl = {xmlsec}:
+  pkgs.stdenv.lib.overrideDerivation xmlsec (oldAttrs: {
+    buildInputs = [ libxml2 gnutls libxslt pkgconfig libgcrypt libtool pkgs.openssl ];
+    configureOptions = "--with-openssl=${pkgs.openssl}";
+    });
+
 in
 
 buildPythonPackage {
   name = "impurePythonEnv";
   buildInputs = [
     blas
+    #(mkPip611 {pip=python27Packages.pip;})
+    #(mkPip611 {pip=python34Packages.pip;})
+    #(mkVirtualenv1211 {virtualenv=python27Packages.virtualenv;})
+    #(mkVirtualenv1211 {virtualenv=python34Packages.virtualenv;})
+    (mkTox192 {tox=python27Packages.tox;})
+    (mkTox192 {tox=python34Packages.tox;})
     chromedriver
     gcc49
     geos
@@ -47,26 +59,21 @@ buildPythonPackage {
     liblapack
     libxml2
     libxslt
+    libyaml
     libzip
     nodejs # TODO: Remove this and figure out a way to combine build environments
-    pkgconfig
-    python27Full
-    #(mkVirtualenv1211 {virtualenv=python27Packages.virtualenv;})
-    python27Packages.virtualenv
-    #(mkPip611 {pip=python27Packages.pip;})
-    python27Packages.pip
-    (mkTox192 {tox=python27Packages.tox;})
-    python3
-    #(mkVirtualenv1211 {virtualenv=python34Packages.virtualenv;})
-    python34Packages.virtualenv
-    #(mkPip611 {pip=python34Packages.pip;})
-    python34Packages.pip
-    (mkTox192 {tox=python34Packages.tox;})
-    stdenv
-    zlib
     openssl
-    libyaml
+    pkgconfig
+    python2Full
+    python27Packages.pip
+    python27Packages.virtualenv
+    python3
+    python34Packages.pip
+    python34Packages.virtualenv
+    stdenv
+    xmlsec
     zeromq4
+    zlib
   ];
   src = null;
   # When used as `nix-shell --pure`
@@ -74,16 +81,19 @@ buildPythonPackage {
   unset http_proxy
   export GIT_SSL_CAINFO=/etc/ssl/certs/ca-bundle.crt
   export LIBRARY_PATH="\
-    $(cat ${stdenv.cc}/nix-support/orig-cc)/lib64:\
-    ${libxml2}/lib:\
-    ${graphviz}/lib:\
-    ${liblapack}/lib:\
-    ${blas}/lib:\
-    ${geos}/lib:\
-    ${openssl}/lib:\
-    ${libyaml}/lib:\
-    ${zeromq4}/lib"
+$(cat ${stdenv.cc}/nix-support/orig-cc)/lib64:\
+${libxml2}/lib:\
+${graphviz}/lib:\
+${liblapack}/lib:\
+${blas}/lib:\
+${geos}/lib:\
+${openssl}/lib:\
+${libyaml}/lib:\
+${xmlsec}/lib:\
+${zeromq4}/lib:\
+${libtool}/lib"
   export LD_LIBRARY_PATH=$LIBRARY_PATH
+  export C_INCLUDE_PATH="${xmlsec}/include/xmlsec1"
   export BLAS="${blas}/lib/libblas.so"
   export LAPACK="${liblapack}/lib/liblapack.a"
   '';
@@ -91,7 +101,8 @@ buildPythonPackage {
   extraCmds = ''
   unset http_proxy # otherwise downloads will fail ("nodtd.invalid")
   export GIT_SSL_CAINFO=/etc/ssl/certs/ca-bundle.crt
-  export LIBRARY_PATH="${libxml2}/lib:${graphviz}/lib:${liblapack}/lib:${blas}/lib:${geos}/lib:${openssl}/lib:${libyaml}/lib"
+  export LIBRARY_PATH="${libxml2}/lib:${graphviz}/lib:${liblapack}/lib:${blas}/lib:${geos}/lib:${openssl}/lib:${libyaml}/lib:${xmlsec}/lib"
+  export C_INCLUDE_PATH="${xmlsec}/include/xmlsec1"
   export LD_LIBRARY_PATH=$LIBRARY_PATH
   export BLAS="${blas}/lib/libblas.so"
   export LAPACK="${liblapack}/lib/liblapack.a"

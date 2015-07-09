@@ -21,6 +21,8 @@ eval sh $HOME/utils/base16-shell/base16-colors.dark.sh
 . $HOME/utils/virtualfish/auto_activation.fish
 . $HOME/utils/virtualfish/projects.fish
 
+. $HOME/.config/fish/aliases.fish
+
 set PATH ~/bin $PATH
 set PATH ~/.cabal/bin $PATH
 set PATH ./.cabal-sandbox/bin $PATH

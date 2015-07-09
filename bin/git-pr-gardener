@@ -1,14 +1,18 @@
 #! /usr/bin/env python
 
+import itertools
 import sys
 import webbrowser
 import getpass
 import yaml
+from argparse import ArgumentParser
 from datetime import datetime
 from pytz import UTC
 from github3 import GitHub
 from operator import attrgetter
 from os.path import expanduser
+
+ALLOWED_FILTERS = ('milestone', 'state', 'assignee', 'mentioned', 'labels')
 
 def two_factor_auth():
     code = ''
@@ -25,60 +29,95 @@ def commit_date(commit):
         '%Y-%m-%dT%H:%M:%SZ'
     ).replace(tzinfo=UTC)
 
-def main():
+def main(args=None):
+    parser = ArgumentParser()
+    parser.add_argument('--config', default="~/.git-gardener.yaml")
+    parser.add_argument('-m', '--mark')
+
+    args = parser.parse_args(args)
+    list(args)
+
+def list(args):
     gh = GitHub()
 
-    cfg_vars = yaml.safe_load(open(expanduser('~/.git-gardener.yaml')))
+    cfg_vars = yaml.safe_load(open(expanduser(args.config)))
 
     username = cfg_vars.get('username')
     if username is None:
-        print "Set username in the [gardener] section of your config file"
+        print "Set username in your config file"
         return 1
 
     token = cfg_vars.get('token')
     if username is None:
-        print "Set token in the [gardener] section of your config file"
+        print "Set token in your config file"
         return 1
 
-    filters = {}
-    for filter in ('milestone', 'state', 'assignee', 'mentioned', 'labels'):
-        filters[filter] = cfg_vars.get('filter-{}'.format(filter))
+    filters = {
+        key[7:]: value
+        for key, value in cfg_vars.items()
+        if key.startswith('filter-')
+    }
+
+    for filter in filters:
+        if filter not in ALLOWED_FILTERS:
+            print "{!r} is not an allowed filter".format(filter)
+
+    filters = {
+        key: value
+        for key, value in filters.items()
+        if key in ALLOWED_FILTERS
+    }
 
     gh.login(username, token=token)
 
     repos = cfg_vars.get('repos', [])
 
-    for repo_name in repos:
-        org, _, name = repo_name.partition(':')
-        print repo_name, org, name
-        repo = gh.repository(org, name)
-        for issue in repo.iter_issues(**filters):
-            if not issue.pull_request:
-                continue
+    if repos:
+        issues = itertools.chain.from_iterable(
+            gh.iter_repo_issues(*repo.split(':', 1), **filters)
+            for repo in repos
+        )
+    else:
+        filter_map = {
+            'mentioned': 'mentioned',
+            'assignee': 'assigned',
+        }
+        for repo_filter, global_filter in filter_map.items():
+            if repo_filter in filters:
+                filter = global_filter
+                filters.pop(repo_filter)
+        filters.pop('milestone', None)
 
-            pr = repo.pull_request(issue.number)
+        issues = gh.iter_issues(filter, **filters)
 
-            comments = sorted(pr.iter_comments(), key=attrgetter('updated_at'), reverse=True)
-            issue_comments = sorted(pr.iter_issue_comments(), key=attrgetter('updated_at'), reverse=True)
-            commits = sorted(pr.iter_commits(), key=commit_date, reverse=True)
+    for issue in issues:
+        if not issue.pull_request:
+            continue
 
-            latest_data = []
-            if comments:
-                latest_data.append((comments[0].updated_at, comments[0].user.login))
+        owner, repo = issue.repository
+        pr = gh.repository(owner, repo).pull_request(issue.number)
 
-            if issue_comments:
-                latest_data.append((issue_comments[0].updated_at, issue_comments[0].user.login))
+        comments = sorted(pr.iter_comments(), key=attrgetter('updated_at'), reverse=True)
+        issue_comments = sorted(pr.iter_issue_comments(), key=attrgetter('updated_at'), reverse=True)
+        commits = sorted(pr.iter_commits(), key=commit_date, reverse=True)
 
-            if commits:
-                latest_data.append((commit_date(commits[0]), commits[0].committer_as_User().login))
+        latest_data = []
+        if comments:
+            latest_data.append((comments[0].updated_at, comments[0].user.login))
 
-            if not latest_data:
-                continue
+        if issue_comments:
+            latest_data.append((issue_comments[0].updated_at, issue_comments[0].user.login))
 
-            latest_date, latest_user = max(latest_data)
+        if commits:
+            latest_data.append((commit_date(commits[0]), commits[0].committer_as_User().login))
 
-            if latest_user != username:
-                webbrowser.open(pr.html_url)
+        if not latest_data:
+            continue
+
+        latest_date, latest_user = max(latest_data)
+
+        if latest_user != username:
+            print pr.html_url
 
 if __name__ == '__main__':
     sys.exit(main())

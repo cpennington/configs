@@ -5,7 +5,7 @@ ui = auto
 whitespace=fix,-indent-with-non-tab,trailing-space,cr-at-eol
 excludesfile = /home/cpennington/.gitignore.global
 attributesfile = /home/cpennington/.gitattributes.global
-editor = sublime --new-window --wait --command toggle_side_bar
+editor = "emacs"
 
 [alias]
 st = status
@@ -62,8 +62,3 @@ main-view = id:yes \
     stage = <Right> next
     stage = <Enter> :/^@@
 
-[gardener]
-username = cpennington
-token = 2b25c795bb42d11b86e1610640f4bb08cdbc001c
-filter-labels = waiting on LMS
-filter-state = open
