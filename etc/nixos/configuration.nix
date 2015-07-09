@@ -16,6 +16,11 @@
       enableGoogleTalkPlugin = true;
       enableAdobeFlash = true;
     };
+
+    chromium = {
+        enablePepperFlash = true;
+        enablePepperPDF = true;
+    };
   };
 
   # Use the GRUB 2 boot loader.
@@ -39,92 +44,134 @@
     defaultLocale = "en_US.UTF-8";
   };
 
-  # List packages installed in system profile. To search by name, run:
-  # $ nix-env -qaP | grep wget
+  # LIST : packages installed in system profile. To search by name, run:
+  # $ nix-
+  # env -qaP | grep wget
   environment.systemPackages = with pkgs; [
-    git
-    python3
-    python2Full
-    python27Packages.virtualenv
-    python27Packages.pip
-    python27Packages.paver
-    #pkgs.stdenv.lib.overrideDerivation fish (oldAttrs: {
-    #  name = "fish-master-cec1dc";
-    #  src = pkgs.fetchurl {
-    #    url = "https://github.com/fish-shell/fish-shell/archive/cec1dc20956ece1d475641fcf59e0f46a92b8917.tar.gz";
-    #    md5 = "ea24070abae4dbb298fb04df2dee695b";
-    #  };
-    #})
-    fish
-    inconsolata
-    corefonts
-    ubuntu_font_family
-    vim
-    firefox
+    #ghc.ghc784
     chromium
-    networkmanagerapplet
-    hipchat
+    corefonts
     dropbox
-    keepassx2
-    sublime3
+    emacs
+    firefox
+    fish
+    git
     gitAndTools.tig
-    ghc.ghc784
-    xchat
     hexchat
-    vagrant
+    inconsolata
+    keepassx2
     linuxPackages.virtualbox
+    networkmanagerapplet
+    python27Packages.paver
+    python27Packages.pip
+    python27Packages.virtualenv
+    python2Full
+    python3
+    silver-searcher
+    sublime3
+    ubuntu_font_family
+    unzip
+    vagrant
+    #vim
+    xchat
+    xmlsec
+    zip
   ];
+
+  nixpkgs.config.packageOverrides = pkgs: rec {
+    fish = pkgs.stdenv.lib.overrideDerivation pkgs.fish (oldAttrs: {
+      name = "fish-master-2.2b1";
+      version = "2.2b1";
+      
+      src = pkgs.fetchurl {
+        url = "https://github.com/fish-shell/fish-shell/archive/2.2b1.tar.gz";
+        md5 = "dcdb28d5cba7019414bb763b85045dfc";
+      };
+
+      buildInputs = [ pkgs.ncurses pkgs.libiconv pkgs.autoreconfHook pkgs.autoconf pkgs.automake pkgs.libtool ]; 
+    });
+  };
+
+  systemd.services.dd-agent.environment.PYTHONPATH = "${pkgs.pythonPackages.psutil}/lib/python2.7/site-packages";
+  systemd.services.dogstatsd.environment.PYTHONPATH = "${pkgs.pythonPackages.psutil}/lib/python2.7/site-packages";
 
   # List services that you want to enable:
 
-  # Enable the OpenSSH daemon.
-  # services.openssh.enable = true;
+  services = {
+    # Enable the OpenSSH daemon.
+    # openssh.enable = true;
 
-  # Enable CUPS to print documents.
-  # services.printing.enable = true;
+    # Enable CUPS to print documents.
+    # printing.enable = true;
 
-  # Enable the X11 windowing system.
-  services.xserver.enable = true;
-  services.xserver.layout = "us";
-  services.xserver.xkbOptions = "";
-  services.xserver.xkbVariant = "dvorak";
+    # Enable the X11 windowing system.
+    xserver = {
+      enable = true;
+      layout = "us";
+      xkbOptions = "";
+      xkbVariant = "dvorak";
 
- # Enable xmonad
-  services.xserver.windowManager.xmonad.enable = true;
-  services.xserver.windowManager.xmonad.enableContribAndExtras = true;
-  services.xserver.windowManager.default = "xmonad";
+      # Enable xmonad
+      windowManager.xmonad = {
+        enable = true;
+        enableContribAndExtras = true;
+        extraPackages = haskellPackages: [
+          haskellPackages.xmonad-contrib
+        ];
+      };
+      windowManager.default = "xmonad";
 
-  # Enable the touchpad
-  services.xserver.synaptics.enable = true;
+      # Enable the touchpad
+      synaptics = {
+        enable = true;
+        twoFingerScroll = true;
+        palmDetect = true;
+      };
 
-  # Enable nvidia drivers
-  services.xserver.videoDrivers = ["nvidia"];
+      # Enable nvidia drivers
+      #videoDrivers = ["nvidia"];
 
-  # Enable hardware acceleration for 32bit colors
-  hardware.opengl.driSupport32Bit = true;
-  
-  # Enable the KDE Desktop Environment.
-  # services.xserver.displayManager.kdm.enable = true;
-  # services.xserver.desktopManager.kde4.enable = true;
-  services.xserver.desktopManager.gnome3.enable = true;
-  services.xserver.desktopManager.xfce.enable = true;
-  services.xserver.desktopManager.xterm.enable = false;
-  services.xserver.desktopManager.default = "xfce";
 
-  services.mongodb.enable = true;
-  services.mongodb.dbpath = "/mnt/external/mongodb";
+      # Enable the KDE Desktop Environment.
+      # displayManager.kdm.enable = true;
+      # desktopManager.kde4.enable = true;
+      desktopManager = {
+        gnome3.enable = true;
+        xfce.enable = true;
+        xterm.enable = false;
+        default = "xfce";
+      };
 
-  services.mysql = {
-    enable = true;
-    package = pkgs.mysql55;
-    socketFile = "/tmp/mysql.sock";
+    };
+
+    dd-agent = {
+      enable = true;
+      api_key = "6552eb5172ef3552f7e00b25ec92730d";
+    };
+      
+    # Enable hardware acceleration for 32bit colors
+    #hardware.opengl.driSupport32Bit = true;
+
+    mongodb = {
+      enable = true;
+      dbpath = "/home/cpennington/mongodb";
+    };
+
+    mysql = {
+      enable = true;
+      package = pkgs.mysql55;
+      #socketFile = "/tmp/mysql.sock";
+    };
+
+    memcached.enable = true;
+
+    syslogd.enable = true;
+
+    dbus.enable = true;
+
+    openssh.enable = true;
+    nfs.server.enable = true;
   };
-
-  services.memcached.enable = true;
-
-  services.syslogd.enable = true;
-
-  services.dbus.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.extraUsers.cpennington = {
@@ -135,7 +182,7 @@
 
   fileSystems = {
     "/home" = { device = "/dev/sda2"; };
-    "/mnt/external" = { device = "/dev/sdb1"; };
+    #"/mnt/external" = { device = "/dev/sdb1"; };
   };
 
   swapDevices = [ { device = "/dev/sda3"; } ];
@@ -143,16 +190,15 @@
   time.timeZone = "America/New_York";
 
 
-   fonts = {
-     enableFontDir = true;
-     enableGhostscriptFonts = true;
-     fonts = with pkgs; [
-       inconsolata  # monospaced
-       corefonts  # Micrsoft free fonts
-       ubuntu_font_family  # Ubuntu fonts
-     ];
-   };
-  services.nfs.server.enable = true;
+  fonts = {
+    enableFontDir = true;
+    enableGhostscriptFonts = true;
+    fonts = with pkgs; [
+      inconsolata  # monospaced
+      corefonts  # Micrsoft free fonts
+      ubuntu_font_family  # Ubuntu fonts
+    ];
+  };
 
   security.pam.loginLimits = [ { domain = "*"; item = "nofile"; type = "-"; value = "999999"; }];
  
@@ -166,4 +212,5 @@
   networking.extraHosts = ''
     127.0.0.1 localhost.edx.org
   '';
+
 }
