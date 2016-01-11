@@ -30,6 +30,11 @@
      syntax-checking
      minimap
      python
+     django
+     ansible
+     (haskell :variables
+              haskell-enable-ghc-mod-support nil
+              haskell-enable-hindent-style "johan-tibell")
      )
    ;; List of additional packages that will be installed wihout being
    ;; wrapped in a layer. If you need some configuration for these
@@ -79,11 +84,11 @@ before layers configuration."
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font. `powerline-scale' allows to quickly tweak the mode-line
    ;; size to make separators look not too crappy.
-   dotspacemacs-default-font '("Inconsolata"
-                               :size 13
+   dotspacemacs-default-font '("FantasqueSansMono"
+                               :size 16
                                :weight normal
                                :width normal
-                               :powerline-scale 1.1)
+                               :powerline-scale 1.2)
    ;; The leader key
    dotspacemacs-leader-key "SPC"
    ;; The leader key accessible in `emacs state' and `insert state'
