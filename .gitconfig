@@ -5,7 +5,7 @@ ui = auto
 whitespace=fix,-indent-with-non-tab,trailing-space,cr-at-eol
 excludesfile = /home/cpennington/.gitignore.global
 attributesfile = /home/cpennington/.gitattributes.global
-editor = "emacs"
+editor = "e"
 
 [alias]
 st = status

@@ -29,7 +29,7 @@ set PATH ./.cabal-sandbox/bin $PATH
 set PATH ~/utils/todo.txt-cli $PATH
 set PATH ~/.rbenv/bin $PATH
 
-set -xU EDITOR "sublime --new-window --wait --command toggle_side_bar"
+set -xU EDITOR e
 set -xU AWS_CONFIG_FILE ~/.aws
 set -xU JSCOVER_JAR ~/work/util/jscover/target/dist/JSCover.jar
 set -xU PROJECT_HOME ~/work
