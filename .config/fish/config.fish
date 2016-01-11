@@ -25,6 +25,7 @@ eval sh $HOME/utils/base16-shell/base16-colors.dark.sh
 
 set PATH ~/bin $PATH
 set PATH ~/.cabal/bin $PATH
+set PATH ~/.local/bin $PATH
 set PATH ./.cabal-sandbox/bin $PATH
 set PATH ~/utils/todo.txt-cli $PATH
 set PATH ~/.rbenv/bin $PATH
