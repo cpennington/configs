@@ -68,3 +68,5 @@
 	stage = <Right> next
 	stage = <Enter> :/^@@
 
+[init]
+	templatedir = ~/.git-template
