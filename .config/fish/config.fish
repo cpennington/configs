@@ -1,3 +1,7 @@
+if not status --is-interactive
+    exit
+end
+
 # Path to your oh-my-fish.
 set fish_path $HOME/.oh-my-fish
 
@@ -15,7 +19,7 @@ set fish_theme vengefulpickle
 . $fish_path/oh-my-fish.fish
 
 # Base16 Shell
-eval sh $HOME/utils/base16-shell/base16-colors.dark.sh
+eval sh $HOME/utils/base16-shell/base16-brewer.dark.sh
 
 . $HOME/utils/virtualfish/virtual.fish
 . $HOME/utils/virtualfish/auto_activation.fish
