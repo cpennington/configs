@@ -1,0 +1,4 @@
+#!/bin/sh
+
+export PROJECT=$1
+envsubst < ~/.tmuxp/template.yaml > ~/.tmuxp/$PROJECT.yaml

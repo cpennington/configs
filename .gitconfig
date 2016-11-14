@@ -1,5 +1,6 @@
 [color]
 	ui = auto
+	diff = auto
 
 [core]
 	whitespace=fix,-indent-with-non-tab,trailing-space,cr-at-eol
@@ -70,3 +71,7 @@
 
 [init]
 	templatedir = ~/.git-template
+[pager]
+	log = diff-highlight | less
+	show = diff-highlight | less
+	diff = diff-highlight | less

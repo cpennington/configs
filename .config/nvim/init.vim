@@ -1,20 +1,24 @@
+" Load vim-plug
+if empty(glob("~/.config/nvim/autoload/plug.vim"))
+    execute '!curl -fLo ~/.config/nvim/autoload/plug.vim https://raw.github.com/junegunn/vim-plug/master/plug.vim'
+endif
+
+" Add list of plugins
 call plug#begin('~/.config/nvim/plugged')
 
 Plug 'benekastah/neomake'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'chriskempson/base16-vim'
-Plug 'rking/ag.vim'
-Plug 'pearofducks/ansible-vim'
-Plug 'neovimhaskell/haskell-vim'
+Plug 'rking/ag.vim', { 'on': 'Ag' }
+Plug 'pearofducks/ansible-vim', { 'for': 'ansible' }
+Plug 'neovimhaskell/haskell-vim', { 'for': 'haskell' }
 Plug 'vim-scripts/SQLUtilities'
 Plug 'vim-scripts/Align'
-Plug 'tmhedberg/SimpylFold'
-Plug 'vim-scripts/indentpython.vim'
+Plug 'tmhedberg/SimpylFold', { 'for': 'python' }
+Plug 'vim-scripts/indentpython.vim', { 'for': 'python' }
 Plug 'Valloric/YouCompleteMe'
 Plug 'tpope/vim-fugitive'
-Plug 'Lokaltog/powerline'
-Plug 'benekastah/neomake'
-Plug 'lambdatoast/elm.vim'
+Plug 'lambdatoast/elm.vim', { 'for': 'elm' }
 Plug 'vim-airline/vim-airline'
 
 call plug#end()
@@ -38,8 +42,9 @@ colorscheme base16-brewer
 let mapleader = "\<Space>"
 
 " Configure CtrlP
-nnoremap <leader>p :CtrlPMixed<CR>
+nnoremap <leader>p :CtrlP<CR>
 nnoremap <leader>bb :CtrlPBuffer<CR>
+let g:ctrlp_working_path_mode = 'ra'
 
 " Set up ag
 let g:ag_working_path_mode="r"
@@ -51,6 +56,8 @@ nnoremap <leader>bn :bn<CR>
 nnoremap <leader>bp :bp<CR>
 nnoremap <leader>bd :bd<CR>
 
+nnoremap <leader><space> :
+
 
 " Neomake
 let g:neomake_dockerfile_make_maker = {
@@ -60,13 +67,19 @@ let g:neomake_dockerfile_make_maker = {
 
 let g:neomake_python_enabled_makers = ['pylint', 'pep8']
 
+autocmd! BufWritePost * Neomake
+
 " YAML settings
 autocmd FileType yaml setlocal shiftwidth=2 tabstop=2
 
 " PHP settings
 autocmd FileType php setlocal shiftwidth=2 tabstop=2
 
+" Ruby settings
+autocmd FileType rb setlocal shiftwidth=2 tabstop=2
+
 " Autocompletion Settings
+"
 let g:ycm_autoclose_preview_window_after_completion=1
 map <leader>g  :YcmCompleter GoToDefinitionElseDeclaration<CR>
 
@@ -74,7 +87,7 @@ map <leader>g  :YcmCompleter GoToDefinitionElseDeclaration<CR>
 set clipboard+=unnamedplus
 
 " Make invisible characters visible
-set listchars="tab:→ ",trail:·,nbsp:¤,precedes:«,extends:»,eol:↲  " specify which characters to use.  If you don't have unicode support in your terminal, adjust these accordingly
+set listchars=tab:→·,trail:·,nbsp:¤,precedes:«,extends:»,eol:$ " specify which characters to use.  If you don't have unicode support in your terminal, adjust these accordingly
 set list     " turn on display of listchars
 
 " Turn on line numbers
