@@ -3,13 +3,16 @@
 CMD=$*
 STRACE_LOG="$(mktemp)"
 UNIQUE_FILES="$(mktemp)"
-TRACE_CMD="strace -efile -o $STRACE_LOG $*"
+TRACE_CMD="strace -f -efile -o $STRACE_LOG $*"
 FILENAME_RE='s#(execve|stat|getcwd|access|open|mkdir|chdir|rmdir|rename)\("([^"]*)".*#\2#'
 
 $TRACE_CMD
 
 while true; do
     sed -r $FILENAME_RE $STRACE_LOG | grep -F $(pwd) | sort -u | xargs ls -d 2>/dev/null > $UNIQUE_FILES
+
+    echo "Waiting for change... press Ctrl+C to exit"
+
     inotifywait -qq \
         -e modify -e close_write -e attrib -e move \
         -e create -e delete -e delete_self \
