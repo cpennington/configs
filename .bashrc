@@ -90,12 +90,11 @@ export AWS_CONFIG_FILE=~/.aws
 export JSCOVER_JAR=~/work/util/jscover/target/dist/JSCover.jar
 export VAGRANT_MOUNT_BASE=~/work
 
-source ~/.cabal/share/compleat-1.0/compleat_setup
-source ~/.bash_prompt
+#source ~/.bash_prompt
 
 (which opam > /dev/null) && eval $(opam config -env)
 
-source ~/utils/git/contrib/completion/git-prompt.sh
+# source ~/utils/git/contrib/completion/git-prompt.sh
 
 PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
 

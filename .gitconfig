@@ -6,7 +6,7 @@
 	whitespace=fix,-indent-with-non-tab,trailing-space,cr-at-eol
 	excludesfile = /home/cpennington/.gitignore.global
 	attributesfile = /home/cpennington/.gitattributes.global
-	editor = "vim"
+	editor = code --wait
 
 [alias]
 	st = status
@@ -24,11 +24,10 @@
 	signingkey = 1245071B
 
 [branch]
-	autosetupmerge = true
 	autosetuprebase = always
 
 [push]
-	default = current
+	default = upstream
 
 [log]
 	follow = true
@@ -38,6 +37,19 @@
 
 [cleanup]
 	ignore = "(master|release)"
+    base = origin/master
+
+[diff]
+    tool = icdiff
+
+[difftool]
+    prompt = false
+
+[difftool "vscode"]
+	cmd = code --wait --diff $LOCAL $REMOTE
+
+[difftool "icdiff"]
+    cmd = /usr/local/bin/icdiff --line-numbers $LOCAL $REMOTE
 
 [alias]
 	fixup = !sh -c 'git rebase -i $(git merge-base HEAD ${1:-origin/master})' -
@@ -49,7 +61,7 @@
 	prep-commit = stash -k -u
 	todo = checklist
 	setup-pull-requests = !sh -c 'git config --add remote.${1?Remote required}.fetch +refs/pull/*/head:refs/remotes/$1/pr/*' -
-	cleanup = !sh -c 'git br -d $(git br --merged edx/master | grep -v $(git config --get cleanup.ignore) | grep -v "\\*" | sed \"s%  %%\")'
+	cleanup = !sh -c 'git br -d $(git br --merged $(git config --get cleanup.base) | grep -v $(git config --get cleanup.ignore) | grep -v "\\*" | sed \"s%  %%\")'
 
 
 [tig]
@@ -75,3 +87,5 @@
 	log = diff-highlight | less
 	show = diff-highlight | less
 	diff = diff-highlight | less
+[diff]
+	algorithm = patience

@@ -25,3 +25,4 @@
 !.xmonad
 .xmonad/*
 !.xmonad/xmonad.hs
+.vscode

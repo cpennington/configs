@@ -19,7 +19,7 @@ set fish_theme vengefulpickle
 . $fish_path/oh-my-fish.fish
 
 # Base16 Shell
-eval sh $HOME/utils/base16-shell/scripts/base16-brewer.sh
+# eval sh $HOME/utils/base16-shell/scripts/base16-brewer.sh
 
 . $HOME/utils/virtualfish/virtual.fish
 . $HOME/utils/virtualfish/auto_activation.fish
@@ -28,11 +28,9 @@ eval sh $HOME/utils/base16-shell/scripts/base16-brewer.sh
 . $HOME/.config/fish/aliases.fish
 
 set PATH ~/bin $PATH
-set PATH ~/.cabal/bin $PATH
 set PATH ~/.local/bin $PATH
 set PATH ./.cabal-sandbox/bin $PATH
 set PATH ~/utils/todo.txt-cli $PATH
-set PATH ~/.rbenv/bin $PATH
 set PATH ~/.go/bin $PATH
 
 set -xU EDITOR vim
@@ -42,5 +40,6 @@ set -xU PROJECT_HOME ~/work
 set -xU SELENIUM_BROWSER chrome
 set -xU GOPATH ~/.go
 
-set -gx RBENV_ROOT ~/.rbenv
-. (rbenv init -|psub)
+set -x PATH "/home/cpennington/.pyenv/bin" $PATH
+status --is-interactive; and . (pyenv init -|psub)
+status --is-interactive; and . (pyenv virtualenv-init -|psub)

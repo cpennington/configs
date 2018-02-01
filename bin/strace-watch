@@ -2,21 +2,30 @@
 
 CMD=$*
 STRACE_LOG="$(mktemp)"
-UNIQUE_FILES="$(mktemp)"
+UNIQUE_DIRS="$(mktemp)"
 TRACE_CMD="strace -f -efile -o $STRACE_LOG $*"
-FILENAME_RE='s#(execve|stat|getcwd|access|open|mkdir|chdir|rmdir|rename)\("([^"]*)".*#\2#'
+SYSCALL_RE="(execve|stat|getcwd|access|open|mkdir|chdir|rmdir|rename|readlink|newfstatat|unlink|statfs|utimensat)"
+FILENAME_RE='s#.*'$SYSCALL_RE'\([^"]*"([^"]*)".*#\2#'
 
-$TRACE_CMD
+time $CMD
+time $TRACE_CMD
 
 while true; do
-    sed -r $FILENAME_RE $STRACE_LOG | grep -F $(pwd) | sort -u | xargs ls -d 2>/dev/null > $UNIQUE_FILES
+    sed -r $FILENAME_RE $STRACE_LOG \
+        | grep -v "+++|---" \
+        | xargs readlink -f -- \
+        | xargs dirname \
+        | grep -F $(pwd) \
+        | grep -v "$(pwd)/.tox" \
+        | sort -u \
+        | xargs ls -d 2>/dev/null > $UNIQUE_DIRS
 
     echo "Waiting for change... press Ctrl+C to exit"
 
     inotifywait -qq \
         -e modify -e close_write -e attrib -e move \
         -e create -e delete -e delete_self \
-        --fromfile <(cat $UNIQUE_FILES; cat $UNIQUE_FILES | xargs dirname | sort -u)
+        --fromfile $UNIQUE_DIRS
     NOTIFY_RESPONSE=$?
     if [ "$NOTIFY_RESPONSE" -eq "1" ]; then
         exit $NOTIFY_RESPONSE

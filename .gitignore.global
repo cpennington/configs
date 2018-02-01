@@ -10,3 +10,5 @@ cabal.sandbox.config
 .venv
 shell.nix
 .tox
+.vscode
+tags

@@ -1,4 +1,5 @@
 import Data.Ratio ((%))
+import Data.List (isInfixOf)
 import XMonad
 import XMonad.Actions.PhysicalScreens
 import XMonad.Actions.SpawnOn
@@ -21,17 +22,27 @@ import XMonad.Hooks.Place (placeHook, smart)
 import qualified Data.Map as M
 import qualified XMonad.StackSet as W
 
+(=<?) :: Query String -> String -> Query Bool
+p =<? s = isInfixOf <$> pure s <*> p
+
+orM = fmap or . sequence
 
 myManageHook = composeAll
-    [ title =? "Do"                                 --> doIgnore
-    , className =? "Xmessage"                       --> doFloat
-    , appName =? "google-chrome"                    --> doF (W.shift "web")
-    , appName =? "mail.google.com__mail_u_1"        --> doF (W.shift "mail")
-    , appName =? "mail.google.com__mail_u_0"        --> doF (W.shift "mail")
-    , appName =? "www.google.com__calendar_render"  --> doF (W.shift "mail")
-    , appName =? "xchat"                            --> doF (W.shift "im")
-    , appName =? "hipchat"                          --> doF (W.shift "im")
-    , appName =? "xfce4-appfinder"                  --> (placeHook (smart (0.5, 0.5)) <+> doFloat)
+    [ title =? "Do"                           --> doIgnore
+    , className =? "Xmessage"                 --> doFloat
+    , appName =? "google-chrome"              --> doF (W.shift "web")
+    , appName =? "code"                       --> doF (W.shift "dev")
+    , appName =? "xfce4-appfinder"            --> (placeHook (smart (0.5, 0.5)) <+> doFloat)
+    , orM [ appName =<? "mail.google.com"
+          , appName =<? "inbox.google.com"
+          , appName =<? "calendar.google.com"
+          ]                                   --> doF (W.shift "mail")
+    , orM [ appName =? "hexchat"
+          , appName =<? "hipchat"
+          , appName =<? "slack"
+          , title   =<? "Gitter"
+          , appName =? "crx_gnadlgpnphkacgbdoldkidkjngbjljoc"
+          ]                                   --> doF (W.shift "im")
     ]
 
 myLayoutHook = desktopLayoutModifiers $

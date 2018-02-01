@@ -54,6 +54,6 @@ GIT_PS1_SHOWDIRTYSTATE=1
 GIT_PS1_SHOWUPSTREAM="auto verbose name"
 GIT_PS1_SHOWCOLORHINTS=1
 GIT_PS1_DESCRIBE_STYLE=branch
-export PROMPT_COMMAND='__git_ps1 "\n[\t]: $(_virtenv)\w" "\n$(_global_todo)$(_git_todo)$ " " (%s | $(_git_rev) $(_git_ci))"'
+export PROMPT_COMMAND='__git_ps1 "\n[\t]: $(_virtenv)\w" "\n$ " ""'
 
 
