@@ -98,6 +98,19 @@ export VAGRANT_MOUNT_BASE=~/work
 
 PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
 
+# Change email to your onelogin email, usually {first inital}{last name}@edx.org
+export ONELOGIN_EMAIL="cale@edx.org"
+
+# Optional: Add the following to have your CLI prompt updated to show what account you've assumed
+# This will update you propt to look like the following when you assume a role.
+# (aws edx-tools-readonly Apr 06 17:52) $
+# The time is when the role assumption session will expire
+# Comment this out if you don't want your shell prompt modified
+export UPDATE_PS1_ASSUME_ROLE=true
+
+source ~/work/edx-internal/scripts/assume-role-onelogin.sh
+
+
 # Alias definitions.
 # You may want to put all your additions into a separate file like
 # ~/.bash_aliases, instead of adding them here directly.
@@ -113,3 +126,5 @@ fi
 # added by travis gem
 source /home/cpennington/.travis/travis.sh
 
+
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash

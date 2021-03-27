@@ -58,7 +58,7 @@ myWorkspaceHotkeys = [ ("web", 'w')
                      , ("pandora", 'p')
                      , ("editor", 'h')]
 
-terminalCmd = "xfce4-terminal --hide-menubar"
+terminalCmd = "/home/cpennington/.local/kitty.app/bin/kitty"
 
 makeLauncher yargs run exec close = concat ["exe=`yeganesh ", yargs, "` && ", run, " ", exec, "$exe", close]
 launcher     = makeLauncher "" "eval" "\"exec " "\""
@@ -86,11 +86,12 @@ myNewKeys = [ ("M-" ++ m ++ [key], windows $ f w)
              [ ("M-g", sshPrompt safePromptConfig)
              , ("M-c", xmonadPrompt safePromptConfig)
              , ("M-r", shellPrompt safePromptConfig)
-             , ("M-.", safeSpawn "xcalib" ["-invert", "-alter"])
              , ("M-'", rescreen)
              , ("M-S-'", splitScreen)
              , ("M-,", safeSpawn "xfce4-display-settings" ["--minimal"])
              , ("M-<Space>", safeSpawn "xfce4-appfinder" ["--collapsed"])
+             , ("M-.", safeSpawn "xrandr" ["--output", "DP-1-2", "--off", "--output", "eDP-1", "--auto"])
+             , ("M-S-.", safeSpawn "xrandr" ["--output", "DP-1-2", "--auto", "--pos", "0x0", "--output", "eDP-1", "--auto", "--pos", "3840x1317"])
              ]
 
 myConfig = xfceConfig

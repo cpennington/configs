@@ -1,3 +1,4 @@
+
 [color]
 	ui = true
 	diff = auto
@@ -7,7 +8,7 @@
 	excludesfile = /home/cpennington/.gitignore.global
 	attributesfile = /home/cpennington/.gitattributes.global
 	editor = code --wait
-	pager = diff-so-fancy | less --tabs=4 -RFX
+	pager = less
 
 [alias]
 	st = status
@@ -28,7 +29,7 @@
 	autosetuprebase = always
 
 [push]
-	default = upstream
+	default = current
 
 [log]
 	follow = true
@@ -63,7 +64,8 @@
 	todo = checklist
 	setup-pull-requests = !sh -c 'git config --add remote.${1?Remote required}.fetch +refs/pull/*/head:refs/remotes/$1/pr/*' -
 	cleanup = !sh -c 'git br -d $(git br --merged $(git config --get cleanup.base) | grep -v $(git config --get cleanup.ignore) | grep -v "\\*" | sed \"s%  %%\")'
-
+	# Show branches, verbosely, sorted by last touch, with commit messages.
+	brv = "!f() { git branch --sort=-creatordate --color=always --format='%(color:reset)%(creatordate:short) %(color:bold black)%(align:2,right)%(upstream:trackshort)%(end)%(color:nobold) %(align:40,left)%(color:yellow)%(refname:short)%(end) %(color:reset)%(contents:subject)'; }; f"
 
 [tig]
 	main-view = id:yes \
